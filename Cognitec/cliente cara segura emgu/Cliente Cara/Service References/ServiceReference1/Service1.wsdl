@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="WS_Enroll_Venas">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BirByte" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="usr" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WS_Enroll_VenasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="WS_Enroll_VenasResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WS_Verify_Venas">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="usr" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WS_Verify_VenasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="WS_Verify_VenasResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WS_Enroll_Cara">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="imgByte" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="usr" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WS_Enroll_CaraResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="WS_Enroll_CaraResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WS_Verify_Cara">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="imgByte" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="usr" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WS_Verify_CaraResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="WS_Verify_CaraResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="WS_Enroll_VenasSoapIn">
+    <wsdl:part name="parameters" element="tns:WS_Enroll_Venas" />
+  </wsdl:message>
+  <wsdl:message name="WS_Enroll_VenasSoapOut">
+    <wsdl:part name="parameters" element="tns:WS_Enroll_VenasResponse" />
+  </wsdl:message>
+  <wsdl:message name="WS_Verify_VenasSoapIn">
+    <wsdl:part name="parameters" element="tns:WS_Verify_Venas" />
+  </wsdl:message>
+  <wsdl:message name="WS_Verify_VenasSoapOut">
+    <wsdl:part name="parameters" element="tns:WS_Verify_VenasResponse" />
+  </wsdl:message>
+  <wsdl:message name="WS_Enroll_CaraSoapIn">
+    <wsdl:part name="parameters" element="tns:WS_Enroll_Cara" />
+  </wsdl:message>
+  <wsdl:message name="WS_Enroll_CaraSoapOut">
+    <wsdl:part name="parameters" element="tns:WS_Enroll_CaraResponse" />
+  </wsdl:message>
+  <wsdl:message name="WS_Verify_CaraSoapIn">
+    <wsdl:part name="parameters" element="tns:WS_Verify_Cara" />
+  </wsdl:message>
+  <wsdl:message name="WS_Verify_CaraSoapOut">
+    <wsdl:part name="parameters" element="tns:WS_Verify_CaraResponse" />
+  </wsdl:message>
+  <wsdl:portType name="Service1Soap">
+    <wsdl:operation name="WS_Enroll_Venas">
+      <wsdl:input message="tns:WS_Enroll_VenasSoapIn" />
+      <wsdl:output message="tns:WS_Enroll_VenasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WS_Verify_Venas">
+      <wsdl:input message="tns:WS_Verify_VenasSoapIn" />
+      <wsdl:output message="tns:WS_Verify_VenasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WS_Enroll_Cara">
+      <wsdl:input message="tns:WS_Enroll_CaraSoapIn" />
+      <wsdl:output message="tns:WS_Enroll_CaraSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WS_Verify_Cara">
+      <wsdl:input message="tns:WS_Verify_CaraSoapIn" />
+      <wsdl:output message="tns:WS_Verify_CaraSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="Service1Soap" type="tns:Service1Soap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WS_Enroll_Venas">
+      <soap:operation soapAction="http://tempuri.org/WS_Enroll_Venas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WS_Verify_Venas">
+      <soap:operation soapAction="http://tempuri.org/WS_Verify_Venas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WS_Enroll_Cara">
+      <soap:operation soapAction="http://tempuri.org/WS_Enroll_Cara" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WS_Verify_Cara">
+      <soap:operation soapAction="http://tempuri.org/WS_Verify_Cara" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Service1Soap12" type="tns:Service1Soap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WS_Enroll_Venas">
+      <soap12:operation soapAction="http://tempuri.org/WS_Enroll_Venas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WS_Verify_Venas">
+      <soap12:operation soapAction="http://tempuri.org/WS_Verify_Venas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WS_Enroll_Cara">
+      <soap12:operation soapAction="http://tempuri.org/WS_Enroll_Cara" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WS_Verify_Cara">
+      <soap12:operation soapAction="http://tempuri.org/WS_Verify_Cara" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service1">
+    <wsdl:port name="Service1Soap" binding="tns:Service1Soap">
+      <soap:address location="http://localhost:1285/Service1.asmx" />
+    </wsdl:port>
+    <wsdl:port name="Service1Soap12" binding="tns:Service1Soap12">
+      <soap12:address location="http://localhost:1285/Service1.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
