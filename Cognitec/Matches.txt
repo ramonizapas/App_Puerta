@@ -1,7 +1,0 @@
-D:\ramón\GUTI\PruebaCognitec\fir\alice1.fir  ->  1
-D:\ramón\GUTI\PruebaCognitec\fir\alice.fir  ->  1
-D:\ramón\GUTI\PruebaCognitec\fir\alice2.fir  ->  0,9996952
-D:\ramón\GUTI\PruebaCognitec\fir\alice4.fir  ->  0,9995666
-D:\ramón\GUTI\PruebaCognitec\fir\alice5.fir  ->  0,9995285
-D:\ramón\GUTI\PruebaCognitec\fir\alice8.fir  ->  0,9967171
-D:\ramón\GUTI\PruebaCognitec\fir\alice3.fir  ->  0,7114554

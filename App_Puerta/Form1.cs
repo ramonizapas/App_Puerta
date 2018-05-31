@@ -46,8 +46,7 @@ namespace App_Puerta
         string verificacion2;
         int numMuestras;
         HaarCascade haar;
-
-
+        
         public App_Puerta()
         {
             InitializeComponent();
@@ -70,7 +69,7 @@ namespace App_Puerta
             verificacion1 = "V1";
             verificacion2 = "V2";
             //Classifier = new CascadeClassifier(dirLibCaras);
-            haar = new HaarCascade(dirLibCaras);
+            haar = new HaarCascade(dirLibCaras);            
 
         }
 
@@ -139,7 +138,7 @@ namespace App_Puerta
 
         private void button_huella_Click(object sender, EventArgs e)
         {
-            //String huella = capturaHuella();
+            String huella = capturaHuella();
         }
 
         private void button_huella_siguiente_Click(object sender, EventArgs e)
@@ -277,14 +276,23 @@ namespace App_Puerta
             unsafe
             {
 
-                byte* capturedImage = (byte*)0;
-                //capturedImage = new byte* { 200000 };
+                byte* capturedImage = stackalloc byte[200000];
                 int imageWidth, imageHeight;
                 int codigoError = 0;
+                int codigoInit = 0;
 
                 try
                 {
-                    codigoError = EikonTouchClass.CaptureImage(10000, &imageWidth, &imageHeight, capturedImage);
+                    codigoInit = EikonTouchClass.Init();
+                    if (codigoInit != 0) {
+
+                        MessageBox.Show("Error inicializando el sensor de huella");
+                        log("Error inicializando el sensor de huella");
+                        return "-1";
+                    }
+
+                    codigoInit = EikonTouchClass.Open();   
+                    codigoError = EikonTouchClass.CaptureImage(10000, &imageWidth, &imageHeight, capturedImage);                    
                 }
                 catch (Exception e)
                 {
