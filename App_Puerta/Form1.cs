@@ -7,25 +7,37 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using EikonLibrary;
 using EikonTouchLibrary;
+
 using Emgu.CV;
-using Emgu.Util;
-using Emgu.CV.UI;
+using Emgu.CV.Structure;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Features2D;
+using Emgu.CV.Flann;
+using Emgu.CV.Util;
+
 using System.IO;
+using System.Drawing.Imaging;
+using System.Threading;
+
+
 
 namespace App_Puerta
 {
     public partial class App_Puerta : Form
     {
-        //Capture capture;
+        Capture capture;
         string user;
         string pass;
         string mediaType;
         string IP;
-        string dirCaras = "../../caras";
-        string dirHuellas = "../../huellas";
-        string dirUsuarios = "../../usuarios.txt";        
+        string dirCaras = @"caras\";
+        string dirLibCaras = "haarcascade_frontalface_alt_tree.xml";        
+        string dirHuellas = @"huellas\";
+        string dirUsuarios = @"usuarios.txt";
+        string formatoCaras = ".png";     
         string id;
         string escenario1;
         string escenario3;
@@ -33,16 +45,17 @@ namespace App_Puerta
         string verificacion1;
         string verificacion2;
         int numMuestras;
+        HaarCascade haar;
 
 
         public App_Puerta()
         {
             InitializeComponent();
-            //capture = new Capture();
+            //capture = new Capture();            
             //capture.SetCaptureProperty(Emgu.CV.CvEnum.CAP_PROP.CV_CAP_PROP_FRAME_HEIGHT, 720);      //720
             //capture.SetCaptureProperty(Emgu.CV.CvEnum.CAP_PROP.CV_CAP_PROP_FRAME_WIDTH, 500);       //500            
             //capture.SetCaptureProperty(Emgu.CV.CvEnum.CAP_PROP.CV_CAP_PROP_CONVERT_RGB, 0);
-            textBox_nombre.Text = "1";
+            textBox_nombre.Text = "p";
             textBox_ID.Text = "1";
             user = "root";
             pass = "admin";
@@ -56,6 +69,9 @@ namespace App_Puerta
             reclutamiento = "RE";
             verificacion1 = "V1";
             verificacion2 = "V2";
+            //Classifier = new CascadeClassifier(dirLibCaras);
+            haar = new HaarCascade(dirLibCaras);
+
         }
 
         /* EVENTOS DE BOTÓN */
@@ -128,12 +144,14 @@ namespace App_Puerta
 
         private void button_huella_siguiente_Click(object sender, EventArgs e)
         {
-
-            iniciarCamara();
-
             //COMPROBAR QUE TENEMOS TODAS LAS HUELLAS, SI NO, AVISAR!
-            //HABILITAR LA CÁMARA            
+            //HABILITAR LA CÁMARA  
+            iniciarCamara();
+            //Thread.Sleep(500);
+                      
             panel_cara.Enabled = true;
+            timer_cara_reclutamiento.Enabled = true;
+            timer_cara_reclutamiento.Start();
         }
 
         private void button_final_reclutamiento_Click(object sender, EventArgs e)
@@ -195,7 +213,7 @@ namespace App_Puerta
                 while ((aux = sr.ReadLine()) != null)
                 {
                     linea = aux;
-                    if (linea.Contains(nombre) || linea.Contains(id)) {
+                    if (linea.Contains("_" + nombre + "_") || linea.Contains(dni)) {
                         sr.Close();
                         return -2;
                     }
@@ -349,7 +367,9 @@ namespace App_Puerta
                 axAxisMediaControl_R.MediaPassword = pass;
                 axAxisMediaControl_R.MediaType = mediaType;
                 axAxisMediaControl_R.MediaURL = CompleteURL(IP, mediaType);
-                axAxisMediaControl_R.Play(); 
+                axAxisMediaControl_R.Play();
+                string direccion = "http://root:admin@10.10.10.104/axis-cgi/mjpg/video.cgi?x.mjpeg";                
+                capture = new Capture(direccion);
             }
             catch (Exception ex)
             {
@@ -359,238 +379,61 @@ namespace App_Puerta
             return true;
         }
 
-        public bool capturarCara(string fase)
-        {
-
-            //Obtención de imagen
-            int muestra = 1;
-            int resultado = 1;
-
-            string nombreArchivo = id + "_" + escenario1 + "_" + "00"+ muestra + "_" + fase + "_" + resultado + ".png";
-            string nombreArchivo2 = id + "_" + escenario1 + "_" + "00" + muestra + "_" + fase + "_" + resultado + "Aux.png";
-            
-            string idB = caras + nombre + "B.bmp";
-            string idB2 = caras + nombre + "AuxB" + ".png";
-
-
-            if(fase.Equals("RE"))
-           
-
-            axAxisMediaControl1.SaveCurrentImage(0, id2);
-
-                Thread.Sleep(500);
-
-                Bitmap x = (Bitmap)System.Drawing.Image.FromFile(id2);
-                System.Drawing.Image x2 = x.Clone(new Rectangle(200, 100, 240, 320), x.PixelFormat);
-                x2.Save(id, ImageFormat.Bmp);
-
-                int rec = reclutamiento(id);
-
-                if (rec < -4)
-                {
-                    try
-                    {
-                        // Stop the stream (will also stop any recording in progress).                
-                        Thread.Sleep(500);
-                        axAxisMediaControl1.Stop();
-                        axAxisMediaControl1.Hide();
-
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-
-                    OKfacial.Visible = true;
-                    OKfacial.Refresh();
-
-                    enrollment(caras + nombre + ".bmp", caras + nombre + ".fir");
-
-                }
-
-                imageEnrol.Load(id);
-                imageEnrol.Refresh();
-                imageEnrol.Visible = true;
-            }
-
-            else
-            {
-                axAxisMediaControl2.SaveCurrentImage(0, idB2);
-
-                Thread.Sleep(500);
-
-                Bitmap xB = (Bitmap)System.Drawing.Image.FromFile(idB2);
-                System.Drawing.Image xB2 = xB.Clone(new Rectangle(200, 100, 240, 320), xB.PixelFormat);
-                xB2.Save(idB, ImageFormat.Bmp);
-
-                int recB = reclutamiento(idB);
-
-                if (recB < -4)
-                {
-                    try
-                    {
-                        // Stop the stream (will also stop any recording in progress).                
-                        Thread.Sleep(500);
-                        axAxisMediaControl2.Stop();
-                        axAxisMediaControl2.Hide();
-
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-
-                    //OKfacial.Visible = true;
-                    //OKfacial.Refresh();
-
-                    //enrollment(caras + nombre + ".bmp", caras + nombre + ".fir");
-
-                    int err = verification(caras, nombre, idB);
-
-                    imagenRecog.Load(idB);
-                    imagenRecog.Refresh();
-                    imagenRecog.Visible = true;
-
-                    if (err != 0)
-                    {
-                        MessageBox.Show("Usuario desconocido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Hola " + nombre + '\n' + '\n' + "Temperatura: " + temperatura + "ºC" + '\n' + "Humedad: " + humedad + "%", "Habitación Principal", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
-                        recogNombre.Text = nombre;
-                        recogTemp.Text = temperatura + "ºC";
-                        recogHum.Text = humedad + "%";
-                    }
-
-                }
-
-
-            }
-
-
-
-
-        }*/
-
 
         /********************/
 
-
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         
 
-        private void panel7_Paint(object sender, PaintEventArgs e)
+        private void button_cara_Click(object sender, EventArgs e)
         {
+            
+                MessageBox.Show("cara de usuario " + id + " capturada");
+                log("cara de usuario " + id + " capturada");
+            
+        }
+
+        private void timer_cara_reclutamiento_Tick(object sender, EventArgs e)
+        {
+            
+            //Obtención de imagen
+            int muestra = 1;
+            int resultado = 1;
+            
+            string nombreArchivo = id + "_" + escenario1 + "_" + "00" + muestra + "_" + "RE" + "_" + resultado + formatoCaras;
+
+            Image<Bgr, Byte> currentFrame = capture.QueryFrame();
+            //Bitmap image = currentFrame.ToBitmap();
+            //pictureBox_cara_reclutamiento.Image = image;
+
+            if (currentFrame != null)
+            {
+                Image<Gray, Byte> grayFrame = currentFrame.Convert<Gray, Byte>();                
+                var detectedFaces = grayFrame.DetectHaarCascade(haar, 1.6, 4, HAAR_DETECTION_TYPE.DO_CANNY_PRUNING, new Size(grayFrame.Width / 8, grayFrame.Height / 8))[0];
+
+                if (detectedFaces.Length > 1)
+                {
+                    MessageBox.Show("Más de una cara detectada");
+                }
+                else if (detectedFaces.Length == 1 && detectedFaces[0].rect.Width > 10)
+                {
+                    Bitmap image = currentFrame.ToBitmap();
+                    image.Save(dirCaras + "/" + nombreArchivo);
+                    foreach (var face in detectedFaces)                        
+                        currentFrame.Draw(face.rect, new Bgr(0, double.MaxValue, 0), 3);
+
+                    Bitmap image2 = currentFrame.ToBitmap();                    
+                    pictureBox_cara_reclutamiento.Image = image2;
+                    
+                    timer_cara_reclutamiento.Enabled = false;
+                    timer_cara_reclutamiento.Stop();
+                    log("Imagen facial " + nombreArchivo + " salvada correctamente");
+                    MessageBox.Show("Muestra salvada correctamente");
+                }
+
+            }         
 
         }
 
-        private void huella_result_5_v2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void huella_result_4_v2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void huella_result_3_v2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void huella_result_2_v2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void huella_result_1_v2_Click(object sender, EventArgs e)
-        {
-
-        }
-        
-        private void label_huellas_reclutamiento_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label9_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        
-
-        private void button_borrar_huella_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button_borrar_huellas_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button_borrar_cara_v1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button_borrar_caras_v1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cara_result_1_v1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cara_result_2_v1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cara_result_3_v1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cara_result_4_v1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cara_result_5_v1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void axAxisMediaControl_V2_OnError(object sender, AxAXISMEDIACONTROLLib._IAxisMediaControlEvents_OnErrorEvent e)
-        {
-
-        }
 
         /* LOG */
         public void log(string logMessage)
@@ -604,5 +447,7 @@ namespace App_Puerta
             w.WriteLine("-------------------------------");
             w.Close();
         }
+
+        /********/
     }
 }
