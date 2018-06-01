@@ -21,8 +21,7 @@ using Emgu.CV.Util;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Threading;
-
-
+using System.Runtime.InteropServices;
 
 namespace App_Puerta
 {
@@ -37,7 +36,8 @@ namespace App_Puerta
         string dirLibCaras = "haarcascade_frontalface_alt_tree.xml";        
         string dirHuellas = @"huellas\";
         string dirUsuarios = @"usuarios.txt";
-        string formatoCaras = ".png";     
+        string formatoCaras = ".png";
+        string formatoHuellas = ".bmp";
         string id;
         string escenario1;
         string escenario3;
@@ -138,7 +138,18 @@ namespace App_Puerta
 
         private void button_huella_Click(object sender, EventArgs e)
         {
-            String huella = capturaHuella();
+            int muestra = 1;
+            int resultado = 1;
+            string nombreArchivo = id + "_" + escenario1 + "_" + "00" + muestra + "_" + "RE" + "_" + resultado + formatoHuellas;
+            
+            Bitmap bitmapHuella = capturaHuella();
+            
+            bitmapHuella.Save(dirHuellas + nombreArchivo, ImageFormat.Bmp);
+
+            //MemoryStream ms = new MemoryStream(File.ReadAllBytes(dirHuellas + nombreArchivo));
+            //Image img = Image.FromStream(ms);
+            pictureBox_huella_reclutamiento.Image = bitmapHuella;
+            
         }
 
         private void button_huella_siguiente_Click(object sender, EventArgs e)
@@ -270,38 +281,52 @@ namespace App_Puerta
 
         /* Reconocimiento por HUELLA */
 
-        public string capturaHuella()
-        {
+        public Bitmap capturaHuella()
+        {            
+            int imageWidth, imageHeight;
+            byte[] imageArray = null;
+            Bitmap bitmapHuella = null;
+
 
             unsafe
             {
-
-                byte* capturedImage = stackalloc byte[200000];
-                int imageWidth, imageHeight;
+                byte* capturedImage = stackalloc byte[200000];                
                 int codigoError = 0;
                 int codigoInit = 0;
 
                 try
                 {
                     codigoInit = EikonTouchClass.Init();
-                    if (codigoInit != 0) {
+                    if (codigoInit != 0)
+                    {
 
                         MessageBox.Show("Error inicializando el sensor de huella");
                         log("Error inicializando el sensor de huella");
-                        return "-1";
+                        return null;
                     }
 
-                    codigoInit = EikonTouchClass.Open();   
-                    codigoError = EikonTouchClass.CaptureImage(10000, &imageWidth, &imageHeight, capturedImage);                    
+                    codigoInit = EikonTouchClass.Open();
+                    codigoError = EikonTouchClass.CaptureImage(10000, &imageWidth, &imageHeight, capturedImage);
                 }
                 catch (Exception e)
                 {
-                    return e.ToString() + "_errCode= " + codigoError;
+                    return null;
                 }
+
+                if (codigoError == 0)
+                {
+                    imageArray = new byte[imageWidth * imageHeight];
+                    for (int i = 0; i < imageWidth * imageHeight; i++)
+                    {
+                        imageArray[i] = *(capturedImage + i);
+                    }                    
+                }
+
+                bitmapHuella = CopyDataToBitmap(imageArray, imageWidth, imageHeight);
+                
             }
 
-
-            return "OK";
+            return bitmapHuella;
         }
 
         /********************/
@@ -381,7 +406,8 @@ namespace App_Puerta
             }
             catch (Exception ex)
             {
-                MessageBox.Show("No se puede mostrar el stream: " + ex.Message);
+                MessageBox.Show("No se puede mostrar el stream: " + ex.Message);                
+                log("No se puede mostrar el stream de la cámara: " + ex.Message);
             }
 
             return true;
@@ -395,8 +421,8 @@ namespace App_Puerta
         private void button_cara_Click(object sender, EventArgs e)
         {
             
-                MessageBox.Show("cara de usuario " + id + " capturada");
-                log("cara de usuario " + id + " capturada");
+                //MessageBox.Show("cara de usuario " + id + " capturada");
+                //log("cara de usuario " + id + " capturada");
             
         }
 
@@ -407,7 +433,7 @@ namespace App_Puerta
             int muestra = 1;
             int resultado = 1;
             
-            string nombreArchivo = id + "_" + escenario1 + "_" + "00" + muestra + "_" + "RE" + "_" + resultado + formatoCaras;
+            string nombreArchivo = id + "_" + escenario3 + "_" + "00" + muestra + "_" + "RE" + "_" + resultado + formatoCaras;
 
             Image<Bgr, Byte> currentFrame = capture.QueryFrame();
             //Bitmap image = currentFrame.ToBitmap();
@@ -425,7 +451,7 @@ namespace App_Puerta
                 else if (detectedFaces.Length == 1 && detectedFaces[0].rect.Width > 10)
                 {
                     Bitmap image = currentFrame.ToBitmap();
-                    image.Save(dirCaras + "/" + nombreArchivo);
+                    image.Save(dirCaras + nombreArchivo);
                     foreach (var face in detectedFaces)                        
                         currentFrame.Draw(face.rect, new Bgr(0, double.MaxValue, 0), 3);
 
@@ -433,9 +459,7 @@ namespace App_Puerta
                     pictureBox_cara_reclutamiento.Image = image2;
                     
                     timer_cara_reclutamiento.Enabled = false;
-                    timer_cara_reclutamiento.Stop();
-                    log("Imagen facial " + nombreArchivo + " salvada correctamente");
-                    MessageBox.Show("Muestra salvada correctamente");
+                    timer_cara_reclutamiento.Stop();                    
                 }
 
             }         
@@ -457,5 +481,66 @@ namespace App_Puerta
         }
 
         /********/
+
+        public Bitmap CopyDataToBitmap(byte[] data, int width, int height)
+        {
+            //Here create the Bitmap to the know height, width and format
+            Bitmap bmp = new Bitmap(width, height, PixelFormat.Format8bppIndexed);
+
+            //Create a BitmapData and Lock all pixels to be written 
+            BitmapData bmpData = bmp.LockBits(
+                                 new Rectangle(0, 0, bmp.Width, bmp.Height),
+                                 ImageLockMode.WriteOnly, bmp.PixelFormat);
+
+            //Copy the data from the byte array into BitmapData.Scan0
+            Marshal.Copy(data, 0, bmpData.Scan0, data.Length);
+
+
+            //Unlock the pixels
+            bmp.UnlockBits(bmpData);
+
+            Bitmap bmpGray = MakeGrayscale3(bmp);
+
+            //Return the bitmap 
+            return bmpGray;
+            //return bmp;
+        }
+
+        public static Bitmap MakeGrayscale3(Bitmap original)
+        {
+            //create a blank bitmap the same size as original
+            Bitmap newBitmap = new Bitmap(original.Width, original.Height);
+
+            //get a graphics object from the new image
+            Graphics g = Graphics.FromImage(newBitmap);
+
+            //create the grayscale ColorMatrix
+            ColorMatrix colorMatrix = new ColorMatrix(
+               new float[][]
+               {
+         new float[] {.3f, .3f, .3f, 0, 0},
+         new float[] {.59f, .59f, .59f, 0, 0},
+         new float[] {.11f, .11f, .11f, 0, 0},
+         new float[] {0, 0, 0, 1, 0},
+         new float[] {0, 0, 0, 0, 1}
+               });
+
+            //create some image attributes
+            ImageAttributes attributes = new ImageAttributes();
+
+            //set the color matrix attribute
+            attributes.SetColorMatrix(colorMatrix);
+
+            //draw the original image on the new image
+            //using the grayscale color matrix
+            g.DrawImage(original, new Rectangle(0, 0, original.Width, original.Height),
+               0, 0, original.Width, original.Height, GraphicsUnit.Pixel, attributes);
+
+            //dispose the Graphics object
+            g.Dispose();
+            return newBitmap;
+        }
+
+
     }
 }
