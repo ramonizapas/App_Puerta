@@ -310,6 +310,7 @@ namespace App_Puerta
             this.button_borrar_huellas.TabIndex = 23;
             this.button_borrar_huellas.Text = "Borrar todas";
             this.button_borrar_huellas.UseVisualStyleBackColor = true;
+            this.button_borrar_huellas.Click += new System.EventHandler(this.button_borrar_huellas_Click);
             // 
             // pictureBox_huella_reclutamiento
             // 
@@ -329,6 +330,7 @@ namespace App_Puerta
             this.button_borrar_huella.TabIndex = 21;
             this.button_borrar_huella.Text = "Borrar última";
             this.button_borrar_huella.UseVisualStyleBackColor = true;
+            this.button_borrar_huella.Click += new System.EventHandler(this.button_borrar_huella_Click);
             // 
             // button_huella
             // 
@@ -345,7 +347,7 @@ namespace App_Puerta
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(162, 378);
+            this.label9.Location = new System.Drawing.Point(152, 378);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(30, 25);
             this.label9.TabIndex = 19;
@@ -355,11 +357,11 @@ namespace App_Puerta
             // 
             this.label_huellas_reclutamiento.AutoSize = true;
             this.label_huellas_reclutamiento.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_huellas_reclutamiento.Location = new System.Drawing.Point(132, 378);
+            this.label_huellas_reclutamiento.Location = new System.Drawing.Point(135, 378);
             this.label_huellas_reclutamiento.Name = "label_huellas_reclutamiento";
             this.label_huellas_reclutamiento.Size = new System.Drawing.Size(24, 25);
             this.label_huellas_reclutamiento.TabIndex = 17;
-            this.label_huellas_reclutamiento.Text = "1";
+            this.label_huellas_reclutamiento.Text = "0";
             // 
             // panel_cara
             // 
@@ -384,7 +386,7 @@ namespace App_Puerta
             this.axAxisMediaControl_R.Location = new System.Drawing.Point(21, 103);
             this.axAxisMediaControl_R.Name = "axAxisMediaControl_R";
             this.axAxisMediaControl_R.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axAxisMediaControl_R.OcxState")));
-            this.axAxisMediaControl_R.Size = new System.Drawing.Size(192, 192);
+            this.axAxisMediaControl_R.Size = new System.Drawing.Size(192, 273);
             this.axAxisMediaControl_R.TabIndex = 26;
             // 
             // pictureBox_cara_reclutamiento
@@ -417,6 +419,7 @@ namespace App_Puerta
             this.button_borrar_caras.TabIndex = 25;
             this.button_borrar_caras.Text = "Borrar todas";
             this.button_borrar_caras.UseVisualStyleBackColor = true;
+            this.button_borrar_caras.Click += new System.EventHandler(this.button_borrar_caras_Click);
             // 
             // button_cara
             // 
@@ -439,6 +442,7 @@ namespace App_Puerta
             this.button_borrar_cara.TabIndex = 24;
             this.button_borrar_cara.Text = "Borrar última";
             this.button_borrar_cara.UseVisualStyleBackColor = true;
+            this.button_borrar_cara.Click += new System.EventHandler(this.button_borrar_cara_Click);
             // 
             // button_final_reclutamiento
             // 
@@ -455,17 +459,17 @@ namespace App_Puerta
             // 
             this.label_caras_reclutamiento.AutoSize = true;
             this.label_caras_reclutamiento.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_caras_reclutamiento.Location = new System.Drawing.Point(153, 451);
+            this.label_caras_reclutamiento.Location = new System.Drawing.Point(156, 451);
             this.label_caras_reclutamiento.Name = "label_caras_reclutamiento";
             this.label_caras_reclutamiento.Size = new System.Drawing.Size(24, 25);
             this.label_caras_reclutamiento.TabIndex = 18;
-            this.label_caras_reclutamiento.Text = "1";
+            this.label_caras_reclutamiento.Text = "0";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(183, 451);
+            this.label10.Location = new System.Drawing.Point(174, 451);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(30, 25);
             this.label10.TabIndex = 20;

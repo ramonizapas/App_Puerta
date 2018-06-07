@@ -46,7 +46,9 @@ namespace App_Puerta
         string verificacion2;
         int numMuestras;
         HaarCascade haar;
-        
+        string IPcam;
+
+
         public App_Puerta()
         {
             InitializeComponent();
@@ -69,8 +71,8 @@ namespace App_Puerta
             verificacion1 = "V1";
             verificacion2 = "V2";
             //Classifier = new CascadeClassifier(dirLibCaras);
-            haar = new HaarCascade(dirLibCaras);            
-
+            haar = new HaarCascade(dirLibCaras);
+            IPcam = "http://root:admin@10.10.10.104/axis-cgi/mjpg/video.cgi?x.mjpeg";            
         }
 
         /* EVENTOS DE BOTÓN */
@@ -113,6 +115,7 @@ namespace App_Puerta
 
         //RECLUTAMIENTO
 
+            //ID
         private void button_ID_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(textBox_nombre.Text) || string.IsNullOrWhiteSpace(textBox_ID.Text) || textBox_ID.Text.Any(x => char.IsLetter(x)))
@@ -124,6 +127,7 @@ namespace App_Puerta
                 if (registro(textBox_nombre.Text, textBox_ID.Text) > 0)
                 {
                     panel_huella.Enabled = true;
+                    button_ID.Enabled = false;
                 }
                 else if (registro(textBox_nombre.Text, textBox_ID.Text) == -1) {
                     MessageBox.Show("Error al crear el usuario");
@@ -136,20 +140,92 @@ namespace App_Puerta
             }
         }
 
+            //HUELLA
+
         private void button_huella_Click(object sender, EventArgs e)
         {
             int muestra = 1;
-            int resultado = 1;
-            string nombreArchivo = id + "_" + escenario1 + "_" + "00" + muestra + "_" + "RE" + "_" + resultado + formatoHuellas;
-            
-            Bitmap bitmapHuella = capturaHuella();
-            
-            bitmapHuella.Save(dirHuellas + nombreArchivo, ImageFormat.Bmp);
+            int resultado = 1;                        
+            int labelHuella = Int32.Parse(label_huellas_reclutamiento.Text);
 
-            //MemoryStream ms = new MemoryStream(File.ReadAllBytes(dirHuellas + nombreArchivo));
-            //Image img = Image.FromStream(ms);
-            pictureBox_huella_reclutamiento.Image = bitmapHuella;
+            string[] huellasPrevias = Directory.GetFiles(dirHuellas, id + "*").Select(Path.GetFileName).ToArray();
+
+            if (huellasPrevias.Length == 5)
+            {
+                MessageBox.Show("Reclutamiento de huella terminado, haga click en Siguiente");
+                return;
+            }
+
+            if (huellasPrevias.Length == 0)
+            {
+                muestra = 1;
+            }
+            else {
+                muestra = huellasPrevias.Length + 1;
+            }
+
+            string muestraPadZeros = "" + muestra;
+            muestraPadZeros = muestraPadZeros.PadLeft(3, '0');
+
+            string nombreArchivo = id + "_" + escenario1 + "_" + muestraPadZeros + "_" + "RE" + "_" + resultado + formatoHuellas;
             
+            Bitmap bitmapHuella = capturaHuella();            
+            bitmapHuella.Save(dirHuellas + nombreArchivo, ImageFormat.Bmp);
+            pictureBox_huella_reclutamiento.Image = bitmapHuella;
+            labelHuella = labelHuella + 1;
+            label_huellas_reclutamiento.Text = "" + labelHuella;
+
+            if (muestra == 5) {
+
+                MessageBox.Show("Fin del reclutamiento de huella, haga click en Siguiente");
+                button_huella.Enabled = false;
+            }            
+        }
+
+        private void button_borrar_huella_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("¿Borrar la última huella? Esto no puede deshacerse", "BORRAR", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                //string[] huellasPrevias = Directory.GetFiles(dirHuellas, id + "*").Select(Path.GetFileName).ToArray();
+
+                DirectoryInfo d = new DirectoryInfo(dirHuellas);
+                FileInfo ultima = d.GetFiles().OrderByDescending(f => f.LastWriteTime).First();
+                ultima.Delete();
+                MessageBox.Show("Última huella eliminada");
+                button_huella.Enabled = true;
+                int labelHuella = Int32.Parse(label_huellas_reclutamiento.Text);
+                labelHuella = labelHuella - 1;
+                label_huellas_reclutamiento.Text = "" + labelHuella;
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                //No hacer nada
+            }
+        }
+
+        private void button_borrar_huellas_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("¿Borrar todas las huellas del usuario? Esto no puede deshacerse", "BORRAR", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                DirectoryInfo d = new DirectoryInfo(dirHuellas);
+                //string[] huellasPrevias = Directory.GetFiles(dirHuellas, id + "*").Select(Path.GetFileName).ToArray();
+
+                foreach (FileInfo file in d.GetFiles())
+                {
+                    if (file.Name.Contains(id)) {
+                        file.Delete();
+                    }                    
+                }
+                MessageBox.Show("Huellas del reclutamiento eliminadas");
+                button_huella.Enabled = true;
+                label_huellas_reclutamiento.Text = "0";
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                //No hacer nada
+            }
         }
 
         private void button_huella_siguiente_Click(object sender, EventArgs e)
@@ -160,14 +236,162 @@ namespace App_Puerta
             //Thread.Sleep(500);
                       
             panel_cara.Enabled = true;
+            button_huella_siguiente.Enabled = false;
+            //timer_cara_reclutamiento.Enabled = true;
+            //timer_cara_reclutamiento.Start();
+        }
+
+        //CARA
+
+        private void button_cara_Click(object sender, EventArgs e)
+        {
+            capture = new Capture(IPcam);
             timer_cara_reclutamiento.Enabled = true;
             timer_cara_reclutamiento.Start();
+
         }
+
+        private void button_borrar_cara_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("¿Borrar la última cara? Esto no puede deshacerse", "BORRAR", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                DirectoryInfo d = new DirectoryInfo(dirCaras);
+                FileInfo ultima = d.GetFiles().OrderByDescending(f => f.LastWriteTime).First();
+                ultima.Delete();
+                MessageBox.Show("Última cara eliminada");
+                button_cara.Enabled = true;
+                int labelCara = Int32.Parse(label_caras_reclutamiento.Text);
+                labelCara = labelCara - 1;
+                label_caras_reclutamiento.Text = "" + labelCara;
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                //No hacer nada
+            }
+        }
+
+        private void button_borrar_caras_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("¿Borrar todas las caras del usuario? Esto no puede deshacerse", "BORRAR", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                DirectoryInfo d = new DirectoryInfo(dirCaras);
+
+                foreach (FileInfo file in d.GetFiles())
+                {
+                    if (file.Name.Contains(id))
+                    {
+                        file.Delete();
+                    }
+                }
+                MessageBox.Show("Caras del reclutamiento eliminadas");
+                button_cara.Enabled = true;
+                label_caras_reclutamiento.Text = "0";
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                //No hacer nada
+            }
+        }
+
+        private void timer_cara_reclutamiento_Tick(object sender, EventArgs e)
+        {
+
+            int muestra = 1;
+            int resultado = 1;
+            int labelCara = Int32.Parse(label_caras_reclutamiento.Text);            
+            
+            string[] carasPrevias = Directory.GetFiles(dirCaras, id + "*").Select(Path.GetFileName).ToArray();
+
+            if (carasPrevias.Length == 5)
+            {
+                //MessageBox.Show("Reclutamiento terminado, haga click en Siguiente para comenzar la VISITA 1");
+                //timer_cara_reclutamiento.Stop();
+                timer_cara_reclutamiento.Stop();
+                timer_cara_reclutamiento.Enabled = false;
+                button_cara.Enabled = false;
+                return;
+            }
+
+            else
+            {
+                if (carasPrevias.Length == 0)
+                {
+                    muestra = 1;
+                }
+                else
+                {
+                    muestra = carasPrevias.Length + 1;
+                }
+
+                string muestraPadZeros = "" + muestra;
+                muestraPadZeros = muestraPadZeros.PadLeft(3, '0');
+
+                string nombreArchivo = id + "_" + escenario3 + "_" + muestraPadZeros + "_" + "RE" + "_" + resultado + formatoCaras;
+
+                Image<Bgr, Byte> currentFrame = capture.QueryFrame();
+
+
+                if (currentFrame != null)
+                {
+                    Image<Gray, Byte> grayFrame = currentFrame.Convert<Gray, Byte>();
+                    var detectedFaces = grayFrame.DetectHaarCascade(haar, 1.6, 4, HAAR_DETECTION_TYPE.DO_CANNY_PRUNING, new Size(grayFrame.Width / 8, grayFrame.Height / 8))[0];
+
+                    if (detectedFaces.Length > 1)
+                    {
+                        MessageBox.Show("Más de una cara detectada");
+                    }
+                    else if (detectedFaces.Length == 1 && detectedFaces[0].rect.Width > 10)
+                    {
+                        currentFrame.ToBitmap().Save(dirCaras + nombreArchivo);
+                        //foreach (var face in detectedFaces)
+                        //currentFrame.Draw(face.rect, new Bgr(0, double.MaxValue, 0), 3);
+
+                        pictureBox_cara_reclutamiento.Image = currentFrame.ToBitmap();
+
+                        labelCara = labelCara + 1;
+                        label_caras_reclutamiento.Text = "" + labelCara;
+
+                        if (muestra == 5)
+                        {
+                            MessageBox.Show("Fin del reclutamiento, haga click en Siguiente para comenzar la VISITA 1");
+                            button_huella.Enabled = false;
+                        }
+
+                        timer_cara_reclutamiento.Stop();
+                        timer_cara_reclutamiento.Enabled = false;
+                        capture.Dispose();
+                    }
+                }
+            }    
+        }
+
+
 
         private void button_final_reclutamiento_Click(object sender, EventArgs e)
         {
             //COMPROBAR QUE TENEMOS TODAS LAS CARAS, SI NO, AVISAR!
-            //DESHABILITAR LA CÁMARA            
+            //DESHABILITAR LA CÁMARA   
+
+            string[] caras = Directory.GetFiles(dirCaras, id + "*").Select(Path.GetFileName).ToArray();
+            string[] huellas = Directory.GetFiles(dirHuellas, id + "*").Select(Path.GetFileName).ToArray();
+            
+            if (caras.Length < 5)
+            {
+                int faltan = 5 - caras.Length;
+                MessageBox.Show("FALTAN " + faltan + " CARAS POR RECLUTAR");
+                return;
+            }
+
+            if (huellas.Length < 5)
+            {
+                int faltan = 5 - huellas.Length;
+                MessageBox.Show("FALTAN " + faltan + " HUELLAS POR RECLUTAR");
+                return;
+            }
+
+            axAxisMediaControl_R.Stop();
             panel_huella_v1.Enabled = true;
             Controles.SelectedTab = tab_visita1;
         }
@@ -243,19 +467,10 @@ namespace App_Puerta
             else {
                 Int32.TryParse(linea.Substring(0, 3), out numAnterior);
                 numAnterior = numAnterior + 1;
-            }                
-            
-            if (numAnterior <= 9)
-            {
-                nuevoID = "00" + numAnterior;
             }
-            else if (numAnterior > 9 && numAnterior < 99)
-            {
-                nuevoID = "0" + numAnterior;
-            }
-            else {
-                nuevoID = "" + numAnterior;
-            }
+
+            nuevoID = "" + numAnterior;
+            nuevoID = nuevoID.PadLeft(3, '0');
 
             try {
 
@@ -276,8 +491,7 @@ namespace App_Puerta
             log("Usuario " + nuevoID + " creado");
             return numAnterior;
         }
-
-
+        
 
         /* Reconocimiento por HUELLA */
 
@@ -285,12 +499,12 @@ namespace App_Puerta
         {            
             int imageWidth, imageHeight;
             byte[] imageArray = null;
-            Bitmap bitmapHuella = null;
+            //Bitmap bitmapHuella = null;
 
 
             unsafe
             {
-                byte* capturedImage = stackalloc byte[200000];                
+                byte* capturedImage = stackalloc byte[200000];
                 int codigoError = 0;
                 int codigoInit = 0;
 
@@ -307,9 +521,12 @@ namespace App_Puerta
 
                     codigoInit = EikonTouchClass.Open();
                     codigoError = EikonTouchClass.CaptureImage(10000, &imageWidth, &imageHeight, capturedImage);
+                    codigoError = EikonTouchClass.Terminate();
                 }
                 catch (Exception e)
                 {
+                    MessageBox.Show("Excepción capturando la huella" + e.ToString());
+                    log("Excepción capturando la huella");
                     return null;
                 }
 
@@ -319,14 +536,20 @@ namespace App_Puerta
                     for (int i = 0; i < imageWidth * imageHeight; i++)
                     {
                         imageArray[i] = *(capturedImage + i);
-                    }                    
+                    }
+                }
+            }
+                Bitmap bitmap = new Bitmap(imageWidth, imageHeight);
+                for (int i = 0; i < bitmap.Width; i++)
+                {
+                    for (int j = 0; j < bitmap.Height; j++)
+                    {
+                        int colorval = imageArray[(j * imageWidth) + i];
+                        bitmap.SetPixel(i, j, Color.FromArgb(colorval, colorval, colorval));
+                    }
                 }
 
-                bitmapHuella = CopyDataToBitmap(imageArray, imageWidth, imageHeight);
-                
-            }
-
-            return bitmapHuella;
+            return bitmap;
         }
 
         /********************/
@@ -400,9 +623,7 @@ namespace App_Puerta
                 axAxisMediaControl_R.MediaPassword = pass;
                 axAxisMediaControl_R.MediaType = mediaType;
                 axAxisMediaControl_R.MediaURL = CompleteURL(IP, mediaType);
-                axAxisMediaControl_R.Play();
-                string direccion = "http://root:admin@10.10.10.104/axis-cgi/mjpg/video.cgi?x.mjpeg";                
-                capture = new Capture(direccion);
+                axAxisMediaControl_R.Play();                
             }
             catch (Exception ex)
             {
@@ -415,57 +636,7 @@ namespace App_Puerta
 
 
         /********************/
-
-        
-
-        private void button_cara_Click(object sender, EventArgs e)
-        {
-            
-                //MessageBox.Show("cara de usuario " + id + " capturada");
-                //log("cara de usuario " + id + " capturada");
-            
-        }
-
-        private void timer_cara_reclutamiento_Tick(object sender, EventArgs e)
-        {
-            
-            //Obtención de imagen
-            int muestra = 1;
-            int resultado = 1;
-            
-            string nombreArchivo = id + "_" + escenario3 + "_" + "00" + muestra + "_" + "RE" + "_" + resultado + formatoCaras;
-
-            Image<Bgr, Byte> currentFrame = capture.QueryFrame();
-            //Bitmap image = currentFrame.ToBitmap();
-            //pictureBox_cara_reclutamiento.Image = image;
-
-            if (currentFrame != null)
-            {
-                Image<Gray, Byte> grayFrame = currentFrame.Convert<Gray, Byte>();                
-                var detectedFaces = grayFrame.DetectHaarCascade(haar, 1.6, 4, HAAR_DETECTION_TYPE.DO_CANNY_PRUNING, new Size(grayFrame.Width / 8, grayFrame.Height / 8))[0];
-
-                if (detectedFaces.Length > 1)
-                {
-                    MessageBox.Show("Más de una cara detectada");
-                }
-                else if (detectedFaces.Length == 1 && detectedFaces[0].rect.Width > 10)
-                {
-                    Bitmap image = currentFrame.ToBitmap();
-                    image.Save(dirCaras + nombreArchivo);
-                    foreach (var face in detectedFaces)                        
-                        currentFrame.Draw(face.rect, new Bgr(0, double.MaxValue, 0), 3);
-
-                    Bitmap image2 = currentFrame.ToBitmap();                    
-                    pictureBox_cara_reclutamiento.Image = image2;
-                    
-                    timer_cara_reclutamiento.Enabled = false;
-                    timer_cara_reclutamiento.Stop();                    
-                }
-
-            }         
-
-        }
-
+                        
 
         /* LOG */
         public void log(string logMessage)
@@ -481,66 +652,6 @@ namespace App_Puerta
         }
 
         /********/
-
-        public Bitmap CopyDataToBitmap(byte[] data, int width, int height)
-        {
-            //Here create the Bitmap to the know height, width and format
-            Bitmap bmp = new Bitmap(width, height, PixelFormat.Format8bppIndexed);
-
-            //Create a BitmapData and Lock all pixels to be written 
-            BitmapData bmpData = bmp.LockBits(
-                                 new Rectangle(0, 0, bmp.Width, bmp.Height),
-                                 ImageLockMode.WriteOnly, bmp.PixelFormat);
-
-            //Copy the data from the byte array into BitmapData.Scan0
-            Marshal.Copy(data, 0, bmpData.Scan0, data.Length);
-
-
-            //Unlock the pixels
-            bmp.UnlockBits(bmpData);
-
-            Bitmap bmpGray = MakeGrayscale3(bmp);
-
-            //Return the bitmap 
-            return bmpGray;
-            //return bmp;
-        }
-
-        public static Bitmap MakeGrayscale3(Bitmap original)
-        {
-            //create a blank bitmap the same size as original
-            Bitmap newBitmap = new Bitmap(original.Width, original.Height);
-
-            //get a graphics object from the new image
-            Graphics g = Graphics.FromImage(newBitmap);
-
-            //create the grayscale ColorMatrix
-            ColorMatrix colorMatrix = new ColorMatrix(
-               new float[][]
-               {
-         new float[] {.3f, .3f, .3f, 0, 0},
-         new float[] {.59f, .59f, .59f, 0, 0},
-         new float[] {.11f, .11f, .11f, 0, 0},
-         new float[] {0, 0, 0, 1, 0},
-         new float[] {0, 0, 0, 0, 1}
-               });
-
-            //create some image attributes
-            ImageAttributes attributes = new ImageAttributes();
-
-            //set the color matrix attribute
-            attributes.SetColorMatrix(colorMatrix);
-
-            //draw the original image on the new image
-            //using the grayscale color matrix
-            g.DrawImage(original, new Rectangle(0, 0, original.Width, original.Height),
-               0, 0, original.Width, original.Height, GraphicsUnit.Pixel, attributes);
-
-            //dispose the Graphics object
-            g.Dispose();
-            return newBitmap;
-        }
-
-
+        
     }
 }
