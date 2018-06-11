@@ -38,7 +38,7 @@ namespace App_Puerta
             this.tab_inicio = new System.Windows.Forms.TabPage();
             this.button_habilitar = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox_nombre_inicio = new System.Windows.Forms.TextBox();
+            this.textBox_ID_inicio = new System.Windows.Forms.TextBox();
             this.button_existente = new System.Windows.Forms.Button();
             this.button_nuevo = new System.Windows.Forms.Button();
             this.tab_reclutamiento = new System.Windows.Forms.TabPage();
@@ -72,66 +72,48 @@ namespace App_Puerta
             this.panel_cara_v1 = new System.Windows.Forms.Panel();
             this.label15 = new System.Windows.Forms.Label();
             this.axAxisMediaControl_V1 = new AxAXISMEDIACONTROLLib.AxAxisMediaControl();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox_cara_v1 = new System.Windows.Forms.PictureBox();
             this.button_borrar_cara_v1 = new System.Windows.Forms.Button();
-            this.cara_result_5_v1 = new System.Windows.Forms.PictureBox();
             this.button_borrar_caras_v1 = new System.Windows.Forms.Button();
-            this.label_caras_v1 = new System.Windows.Forms.Label();
+            this.label_caras_V1 = new System.Windows.Forms.Label();
             this.button_final_v1 = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
-            this.cara_result_4_v1 = new System.Windows.Forms.PictureBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.cara_result_1_v1 = new System.Windows.Forms.PictureBox();
-            this.cara_result_3_v1 = new System.Windows.Forms.PictureBox();
-            this.button4 = new System.Windows.Forms.Button();
-            this.cara_result_2_v1 = new System.Windows.Forms.PictureBox();
+            this.button_cara_v1 = new System.Windows.Forms.Button();
             this.panel_huella_v1 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
             this.button_huella_siguiente_v1 = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.pictureBox_huella_v1 = new System.Windows.Forms.PictureBox();
             this.button_huella_v1 = new System.Windows.Forms.Button();
-            this.label_huellas_v1 = new System.Windows.Forms.Label();
+            this.label_huellas_V1 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.huella_result_5_v1 = new System.Windows.Forms.PictureBox();
             this.button_borrar_huella_v1 = new System.Windows.Forms.Button();
-            this.huella_result_4_v1 = new System.Windows.Forms.PictureBox();
             this.button_borrar_huellas_v1 = new System.Windows.Forms.Button();
-            this.huella_result_3_v1 = new System.Windows.Forms.PictureBox();
-            this.huella_result_1_v1 = new System.Windows.Forms.PictureBox();
-            this.huella_result_2_v1 = new System.Windows.Forms.PictureBox();
             this.tab_visita2 = new System.Windows.Forms.TabPage();
             this.panel_huella_v2 = new System.Windows.Forms.Panel();
             this.button_borrar_huella_v2 = new System.Windows.Forms.Button();
             this.label20 = new System.Windows.Forms.Label();
-            this.pictureBox8 = new System.Windows.Forms.PictureBox();
-            this.huella_result_5_v2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox_huella_v2 = new System.Windows.Forms.PictureBox();
             this.button_huella_v2 = new System.Windows.Forms.Button();
-            this.huella_result_4_v2 = new System.Windows.Forms.PictureBox();
             this.button_fin = new System.Windows.Forms.Button();
-            this.huella_result_3_v2 = new System.Windows.Forms.PictureBox();
-            this.label_huellas_v2 = new System.Windows.Forms.Label();
-            this.huella_result_2_v2 = new System.Windows.Forms.PictureBox();
+            this.label_huellas_V2 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.huella_result_1_v2 = new System.Windows.Forms.PictureBox();
             this.button_borrar_huellas_v2 = new System.Windows.Forms.Button();
             this.panel_cara_v2 = new System.Windows.Forms.Panel();
             this.axAxisMediaControl_V2 = new AxAXISMEDIACONTROLLib.AxAxisMediaControl();
-            this.pictureBox14 = new System.Windows.Forms.PictureBox();
+            this.pictureBox_cara_v2 = new System.Windows.Forms.PictureBox();
             this.button_borrar_cara_v2 = new System.Windows.Forms.Button();
             this.button_borrar_caras_v2 = new System.Windows.Forms.Button();
-            this.cara_result_1_v2 = new System.Windows.Forms.PictureBox();
-            this.cara_result_2_v2 = new System.Windows.Forms.PictureBox();
-            this.cara_result_3_v2 = new System.Windows.Forms.PictureBox();
-            this.cara_result_4_v2 = new System.Windows.Forms.PictureBox();
-            this.cara_result_5_v2 = new System.Windows.Forms.PictureBox();
             this.label19 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.button_cara_v2 = new System.Windows.Forms.Button();
-            this.label_caras_v2 = new System.Windows.Forms.Label();
+            this.label_caras_V2 = new System.Windows.Forms.Label();
             this.button_cara_siguiente_v2 = new System.Windows.Forms.Button();
             this.label16 = new System.Windows.Forms.Label();
             this.timer_cara_reclutamiento = new System.Windows.Forms.Timer(this.components);
+            this.timer_cara_v1 = new System.Windows.Forms.Timer(this.components);
+            this.timer_cara_v2 = new System.Windows.Forms.Timer(this.components);
             this.Controles.SuspendLayout();
             this.tab_inicio.SuspendLayout();
             this.tab_reclutamiento.SuspendLayout();
@@ -144,35 +126,15 @@ namespace App_Puerta
             this.tab_visita1.SuspendLayout();
             this.panel_cara_v1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.axAxisMediaControl_V1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cara_result_5_v1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cara_result_4_v1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cara_result_1_v1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cara_result_3_v1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cara_result_2_v1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_cara_v1)).BeginInit();
             this.panel_huella_v1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.huella_result_5_v1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.huella_result_4_v1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.huella_result_3_v1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.huella_result_1_v1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.huella_result_2_v1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_huella_v1)).BeginInit();
             this.tab_visita2.SuspendLayout();
             this.panel_huella_v2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.huella_result_5_v2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.huella_result_4_v2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.huella_result_3_v2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.huella_result_2_v2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.huella_result_1_v2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_huella_v2)).BeginInit();
             this.panel_cara_v2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.axAxisMediaControl_V2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox14)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cara_result_1_v2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cara_result_2_v2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cara_result_3_v2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cara_result_4_v2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cara_result_5_v2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_cara_v2)).BeginInit();
             this.SuspendLayout();
             // 
             // Controles
@@ -191,7 +153,7 @@ namespace App_Puerta
             // 
             this.tab_inicio.Controls.Add(this.button_habilitar);
             this.tab_inicio.Controls.Add(this.label1);
-            this.tab_inicio.Controls.Add(this.textBox_nombre_inicio);
+            this.tab_inicio.Controls.Add(this.textBox_ID_inicio);
             this.tab_inicio.Controls.Add(this.button_existente);
             this.tab_inicio.Controls.Add(this.button_nuevo);
             this.tab_inicio.Location = new System.Drawing.Point(4, 22);
@@ -221,13 +183,13 @@ namespace App_Puerta
             this.label1.TabIndex = 3;
             this.label1.Text = "DNI (sin letra)";
             // 
-            // textBox_nombre_inicio
+            // textBox_ID_inicio
             // 
-            this.textBox_nombre_inicio.Location = new System.Drawing.Point(459, 339);
-            this.textBox_nombre_inicio.Multiline = true;
-            this.textBox_nombre_inicio.Name = "textBox_nombre_inicio";
-            this.textBox_nombre_inicio.Size = new System.Drawing.Size(244, 23);
-            this.textBox_nombre_inicio.TabIndex = 2;
+            this.textBox_ID_inicio.Location = new System.Drawing.Point(459, 339);
+            this.textBox_ID_inicio.Multiline = true;
+            this.textBox_ID_inicio.Name = "textBox_ID_inicio";
+            this.textBox_ID_inicio.Size = new System.Drawing.Size(244, 23);
+            this.textBox_ID_inicio.TabIndex = 2;
             // 
             // button_existente
             // 
@@ -395,8 +357,8 @@ namespace App_Puerta
             this.pictureBox_cara_reclutamiento.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.pictureBox_cara_reclutamiento.Location = new System.Drawing.Point(222, 152);
             this.pictureBox_cara_reclutamiento.Name = "pictureBox_cara_reclutamiento";
-            this.pictureBox_cara_reclutamiento.Size = new System.Drawing.Size(119, 102);
-            this.pictureBox_cara_reclutamiento.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox_cara_reclutamiento.Size = new System.Drawing.Size(119, 129);
+            this.pictureBox_cara_reclutamiento.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox_cara_reclutamiento.TabIndex = 14;
             this.pictureBox_cara_reclutamiento.TabStop = false;
             // 
@@ -557,19 +519,14 @@ namespace App_Puerta
             // 
             this.panel_cara_v1.Controls.Add(this.label15);
             this.panel_cara_v1.Controls.Add(this.axAxisMediaControl_V1);
-            this.panel_cara_v1.Controls.Add(this.pictureBox1);
+            this.panel_cara_v1.Controls.Add(this.pictureBox_cara_v1);
             this.panel_cara_v1.Controls.Add(this.button_borrar_cara_v1);
-            this.panel_cara_v1.Controls.Add(this.cara_result_5_v1);
             this.panel_cara_v1.Controls.Add(this.button_borrar_caras_v1);
-            this.panel_cara_v1.Controls.Add(this.label_caras_v1);
+            this.panel_cara_v1.Controls.Add(this.label_caras_V1);
             this.panel_cara_v1.Controls.Add(this.button_final_v1);
             this.panel_cara_v1.Controls.Add(this.label8);
-            this.panel_cara_v1.Controls.Add(this.cara_result_4_v1);
             this.panel_cara_v1.Controls.Add(this.label13);
-            this.panel_cara_v1.Controls.Add(this.cara_result_1_v1);
-            this.panel_cara_v1.Controls.Add(this.cara_result_3_v1);
-            this.panel_cara_v1.Controls.Add(this.button4);
-            this.panel_cara_v1.Controls.Add(this.cara_result_2_v1);
+            this.panel_cara_v1.Controls.Add(this.button_cara_v1);
             this.panel_cara_v1.Enabled = false;
             this.panel_cara_v1.Location = new System.Drawing.Point(418, 0);
             this.panel_cara_v1.Name = "panel_cara_v1";
@@ -588,19 +545,20 @@ namespace App_Puerta
             // axAxisMediaControl_V1
             // 
             this.axAxisMediaControl_V1.Enabled = true;
-            this.axAxisMediaControl_V1.Location = new System.Drawing.Point(105, 80);
+            this.axAxisMediaControl_V1.Location = new System.Drawing.Point(58, 74);
             this.axAxisMediaControl_V1.Name = "axAxisMediaControl_V1";
             this.axAxisMediaControl_V1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axAxisMediaControl_V1.OcxState")));
             this.axAxisMediaControl_V1.Size = new System.Drawing.Size(240, 320);
             this.axAxisMediaControl_V1.TabIndex = 50;
             // 
-            // pictureBox1
+            // pictureBox_cara_v1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(105, 80);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(240, 320);
-            this.pictureBox1.TabIndex = 33;
-            this.pictureBox1.TabStop = false;
+            this.pictureBox_cara_v1.Location = new System.Drawing.Point(322, 176);
+            this.pictureBox_cara_v1.Name = "pictureBox_cara_v1";
+            this.pictureBox_cara_v1.Size = new System.Drawing.Size(106, 136);
+            this.pictureBox_cara_v1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox_cara_v1.TabIndex = 33;
+            this.pictureBox_cara_v1.TabStop = false;
             // 
             // button_borrar_cara_v1
             // 
@@ -612,14 +570,7 @@ namespace App_Puerta
             this.button_borrar_cara_v1.TabIndex = 38;
             this.button_borrar_cara_v1.Text = "Borrar última";
             this.button_borrar_cara_v1.UseVisualStyleBackColor = true;
-            // 
-            // cara_result_5_v1
-            // 
-            this.cara_result_5_v1.Location = new System.Drawing.Point(384, 313);
-            this.cara_result_5_v1.Name = "cara_result_5_v1";
-            this.cara_result_5_v1.Size = new System.Drawing.Size(26, 25);
-            this.cara_result_5_v1.TabIndex = 49;
-            this.cara_result_5_v1.TabStop = false;
+            this.button_borrar_cara_v1.Click += new System.EventHandler(this.button_borrar_cara_Click);
             // 
             // button_borrar_caras_v1
             // 
@@ -630,16 +581,17 @@ namespace App_Puerta
             this.button_borrar_caras_v1.TabIndex = 39;
             this.button_borrar_caras_v1.Text = "Borrar todas";
             this.button_borrar_caras_v1.UseVisualStyleBackColor = true;
+            this.button_borrar_caras_v1.Click += new System.EventHandler(this.button_borrar_caras_v1_Click);
             // 
-            // label_caras_v1
+            // label_caras_V1
             // 
-            this.label_caras_v1.AutoSize = true;
-            this.label_caras_v1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_caras_v1.Location = new System.Drawing.Point(199, 463);
-            this.label_caras_v1.Name = "label_caras_v1";
-            this.label_caras_v1.Size = new System.Drawing.Size(24, 25);
-            this.label_caras_v1.TabIndex = 36;
-            this.label_caras_v1.Text = "1";
+            this.label_caras_V1.AutoSize = true;
+            this.label_caras_V1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_caras_V1.Location = new System.Drawing.Point(204, 463);
+            this.label_caras_V1.Name = "label_caras_V1";
+            this.label_caras_V1.Size = new System.Drawing.Size(24, 25);
+            this.label_caras_V1.TabIndex = 36;
+            this.label_caras_V1.Text = "0";
             // 
             // button_final_v1
             // 
@@ -656,19 +608,11 @@ namespace App_Puerta
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(229, 463);
+            this.label8.Location = new System.Drawing.Point(223, 463);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(30, 25);
             this.label8.TabIndex = 37;
             this.label8.Text = "/5";
-            // 
-            // cara_result_4_v1
-            // 
-            this.cara_result_4_v1.Location = new System.Drawing.Point(384, 282);
-            this.cara_result_4_v1.Name = "cara_result_4_v1";
-            this.cara_result_4_v1.Size = new System.Drawing.Size(26, 25);
-            this.cara_result_4_v1.TabIndex = 48;
-            this.cara_result_4_v1.TabStop = false;
             // 
             // label13
             // 
@@ -680,56 +624,28 @@ namespace App_Puerta
             this.label13.TabIndex = 32;
             this.label13.Text = "Facial";
             // 
-            // cara_result_1_v1
+            // button_cara_v1
             // 
-            this.cara_result_1_v1.Location = new System.Drawing.Point(384, 189);
-            this.cara_result_1_v1.Name = "cara_result_1_v1";
-            this.cara_result_1_v1.Size = new System.Drawing.Size(26, 25);
-            this.cara_result_1_v1.TabIndex = 45;
-            this.cara_result_1_v1.TabStop = false;
-            // 
-            // cara_result_3_v1
-            // 
-            this.cara_result_3_v1.Location = new System.Drawing.Point(384, 251);
-            this.cara_result_3_v1.Name = "cara_result_3_v1";
-            this.cara_result_3_v1.Size = new System.Drawing.Size(26, 25);
-            this.cara_result_3_v1.TabIndex = 47;
-            this.cara_result_3_v1.TabStop = false;
-            // 
-            // button4
-            // 
-            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(190, 429);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 31);
-            this.button4.TabIndex = 34;
-            this.button4.Text = "Captura";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
-            // cara_result_2_v1
-            // 
-            this.cara_result_2_v1.Location = new System.Drawing.Point(384, 220);
-            this.cara_result_2_v1.Name = "cara_result_2_v1";
-            this.cara_result_2_v1.Size = new System.Drawing.Size(26, 25);
-            this.cara_result_2_v1.TabIndex = 46;
-            this.cara_result_2_v1.TabStop = false;
+            this.button_cara_v1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_cara_v1.Location = new System.Drawing.Point(190, 429);
+            this.button_cara_v1.Name = "button_cara_v1";
+            this.button_cara_v1.Size = new System.Drawing.Size(75, 31);
+            this.button_cara_v1.TabIndex = 34;
+            this.button_cara_v1.Text = "Captura";
+            this.button_cara_v1.UseVisualStyleBackColor = true;
+            this.button_cara_v1.Click += new System.EventHandler(this.button_cara_v1_Click);
             // 
             // panel_huella_v1
             // 
             this.panel_huella_v1.Controls.Add(this.label12);
             this.panel_huella_v1.Controls.Add(this.button_huella_siguiente_v1);
             this.panel_huella_v1.Controls.Add(this.label11);
-            this.panel_huella_v1.Controls.Add(this.pictureBox3);
+            this.panel_huella_v1.Controls.Add(this.pictureBox_huella_v1);
             this.panel_huella_v1.Controls.Add(this.button_huella_v1);
-            this.panel_huella_v1.Controls.Add(this.label_huellas_v1);
+            this.panel_huella_v1.Controls.Add(this.label_huellas_V1);
             this.panel_huella_v1.Controls.Add(this.label7);
-            this.panel_huella_v1.Controls.Add(this.huella_result_5_v1);
             this.panel_huella_v1.Controls.Add(this.button_borrar_huella_v1);
-            this.panel_huella_v1.Controls.Add(this.huella_result_4_v1);
             this.panel_huella_v1.Controls.Add(this.button_borrar_huellas_v1);
-            this.panel_huella_v1.Controls.Add(this.huella_result_3_v1);
-            this.panel_huella_v1.Controls.Add(this.huella_result_1_v1);
-            this.panel_huella_v1.Controls.Add(this.huella_result_2_v1);
             this.panel_huella_v1.Enabled = false;
             this.panel_huella_v1.Location = new System.Drawing.Point(-2, 3);
             this.panel_huella_v1.Name = "panel_huella_v1";
@@ -766,51 +682,44 @@ namespace App_Puerta
             this.label11.TabIndex = 24;
             this.label11.Text = "Huella";
             // 
-            // pictureBox3
+            // pictureBox_huella_v1
             // 
-            this.pictureBox3.Location = new System.Drawing.Point(121, 98);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(143, 184);
-            this.pictureBox3.TabIndex = 25;
-            this.pictureBox3.TabStop = false;
+            this.pictureBox_huella_v1.Location = new System.Drawing.Point(105, 109);
+            this.pictureBox_huella_v1.Name = "pictureBox_huella_v1";
+            this.pictureBox_huella_v1.Size = new System.Drawing.Size(185, 243);
+            this.pictureBox_huella_v1.TabIndex = 25;
+            this.pictureBox_huella_v1.TabStop = false;
             // 
             // button_huella_v1
             // 
             this.button_huella_v1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_huella_v1.Location = new System.Drawing.Point(155, 300);
+            this.button_huella_v1.Location = new System.Drawing.Point(156, 383);
             this.button_huella_v1.Name = "button_huella_v1";
             this.button_huella_v1.Size = new System.Drawing.Size(75, 31);
             this.button_huella_v1.TabIndex = 26;
             this.button_huella_v1.Text = "Captura";
             this.button_huella_v1.UseVisualStyleBackColor = true;
+            this.button_huella_v1.Click += new System.EventHandler(this.button_huella_v1_Click);
             // 
-            // label_huellas_v1
+            // label_huellas_V1
             // 
-            this.label_huellas_v1.AutoSize = true;
-            this.label_huellas_v1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_huellas_v1.Location = new System.Drawing.Point(164, 334);
-            this.label_huellas_v1.Name = "label_huellas_v1";
-            this.label_huellas_v1.Size = new System.Drawing.Size(24, 25);
-            this.label_huellas_v1.TabIndex = 28;
-            this.label_huellas_v1.Text = "1";
+            this.label_huellas_V1.AutoSize = true;
+            this.label_huellas_V1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_huellas_V1.Location = new System.Drawing.Point(169, 417);
+            this.label_huellas_V1.Name = "label_huellas_V1";
+            this.label_huellas_V1.Size = new System.Drawing.Size(24, 25);
+            this.label_huellas_V1.TabIndex = 28;
+            this.label_huellas_V1.Text = "0";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(194, 334);
+            this.label7.Location = new System.Drawing.Point(188, 417);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(30, 25);
             this.label7.TabIndex = 29;
             this.label7.Text = "/5";
-            // 
-            // huella_result_5_v1
-            // 
-            this.huella_result_5_v1.Location = new System.Drawing.Point(299, 235);
-            this.huella_result_5_v1.Name = "huella_result_5_v1";
-            this.huella_result_5_v1.Size = new System.Drawing.Size(26, 25);
-            this.huella_result_5_v1.TabIndex = 44;
-            this.huella_result_5_v1.TabStop = false;
             // 
             // button_borrar_huella_v1
             // 
@@ -822,14 +731,7 @@ namespace App_Puerta
             this.button_borrar_huella_v1.TabIndex = 30;
             this.button_borrar_huella_v1.Text = "Borrar última";
             this.button_borrar_huella_v1.UseVisualStyleBackColor = true;
-            // 
-            // huella_result_4_v1
-            // 
-            this.huella_result_4_v1.Location = new System.Drawing.Point(299, 204);
-            this.huella_result_4_v1.Name = "huella_result_4_v1";
-            this.huella_result_4_v1.Size = new System.Drawing.Size(26, 25);
-            this.huella_result_4_v1.TabIndex = 43;
-            this.huella_result_4_v1.TabStop = false;
+            this.button_borrar_huella_v1.Click += new System.EventHandler(this.button_borrar_huella_Click);
             // 
             // button_borrar_huellas_v1
             // 
@@ -840,30 +742,7 @@ namespace App_Puerta
             this.button_borrar_huellas_v1.TabIndex = 31;
             this.button_borrar_huellas_v1.Text = "Borrar todas";
             this.button_borrar_huellas_v1.UseVisualStyleBackColor = true;
-            // 
-            // huella_result_3_v1
-            // 
-            this.huella_result_3_v1.Location = new System.Drawing.Point(299, 173);
-            this.huella_result_3_v1.Name = "huella_result_3_v1";
-            this.huella_result_3_v1.Size = new System.Drawing.Size(26, 25);
-            this.huella_result_3_v1.TabIndex = 42;
-            this.huella_result_3_v1.TabStop = false;
-            // 
-            // huella_result_1_v1
-            // 
-            this.huella_result_1_v1.Location = new System.Drawing.Point(299, 111);
-            this.huella_result_1_v1.Name = "huella_result_1_v1";
-            this.huella_result_1_v1.Size = new System.Drawing.Size(26, 25);
-            this.huella_result_1_v1.TabIndex = 40;
-            this.huella_result_1_v1.TabStop = false;
-            // 
-            // huella_result_2_v1
-            // 
-            this.huella_result_2_v1.Location = new System.Drawing.Point(299, 142);
-            this.huella_result_2_v1.Name = "huella_result_2_v1";
-            this.huella_result_2_v1.Size = new System.Drawing.Size(26, 25);
-            this.huella_result_2_v1.TabIndex = 41;
-            this.huella_result_2_v1.TabStop = false;
+            this.button_borrar_huellas_v1.Click += new System.EventHandler(this.button_borrar_huellas_v1_Click);
             // 
             // tab_visita2
             // 
@@ -881,16 +760,11 @@ namespace App_Puerta
             // 
             this.panel_huella_v2.Controls.Add(this.button_borrar_huella_v2);
             this.panel_huella_v2.Controls.Add(this.label20);
-            this.panel_huella_v2.Controls.Add(this.pictureBox8);
-            this.panel_huella_v2.Controls.Add(this.huella_result_5_v2);
+            this.panel_huella_v2.Controls.Add(this.pictureBox_huella_v2);
             this.panel_huella_v2.Controls.Add(this.button_huella_v2);
-            this.panel_huella_v2.Controls.Add(this.huella_result_4_v2);
             this.panel_huella_v2.Controls.Add(this.button_fin);
-            this.panel_huella_v2.Controls.Add(this.huella_result_3_v2);
-            this.panel_huella_v2.Controls.Add(this.label_huellas_v2);
-            this.panel_huella_v2.Controls.Add(this.huella_result_2_v2);
+            this.panel_huella_v2.Controls.Add(this.label_huellas_V2);
             this.panel_huella_v2.Controls.Add(this.label14);
-            this.panel_huella_v2.Controls.Add(this.huella_result_1_v2);
             this.panel_huella_v2.Controls.Add(this.button_borrar_huellas_v2);
             this.panel_huella_v2.Enabled = false;
             this.panel_huella_v2.Location = new System.Drawing.Point(423, 2);
@@ -908,6 +782,7 @@ namespace App_Puerta
             this.button_borrar_huella_v2.TabIndex = 64;
             this.button_borrar_huella_v2.Text = "Borrar última";
             this.button_borrar_huella_v2.UseVisualStyleBackColor = true;
+            this.button_borrar_huella_v2.Click += new System.EventHandler(this.button_borrar_huella_Click);
             // 
             // label20
             // 
@@ -919,39 +794,24 @@ namespace App_Puerta
             this.label20.TabIndex = 71;
             this.label20.Text = "Huella";
             // 
-            // pictureBox8
+            // pictureBox_huella_v2
             // 
-            this.pictureBox8.Location = new System.Drawing.Point(157, 113);
-            this.pictureBox8.Name = "pictureBox8";
-            this.pictureBox8.Size = new System.Drawing.Size(143, 184);
-            this.pictureBox8.TabIndex = 46;
-            this.pictureBox8.TabStop = false;
-            // 
-            // huella_result_5_v2
-            // 
-            this.huella_result_5_v2.Location = new System.Drawing.Point(348, 249);
-            this.huella_result_5_v2.Name = "huella_result_5_v2";
-            this.huella_result_5_v2.Size = new System.Drawing.Size(26, 25);
-            this.huella_result_5_v2.TabIndex = 70;
-            this.huella_result_5_v2.TabStop = false;
+            this.pictureBox_huella_v2.Location = new System.Drawing.Point(136, 125);
+            this.pictureBox_huella_v2.Name = "pictureBox_huella_v2";
+            this.pictureBox_huella_v2.Size = new System.Drawing.Size(185, 243);
+            this.pictureBox_huella_v2.TabIndex = 46;
+            this.pictureBox_huella_v2.TabStop = false;
             // 
             // button_huella_v2
             // 
             this.button_huella_v2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_huella_v2.Location = new System.Drawing.Point(191, 315);
+            this.button_huella_v2.Location = new System.Drawing.Point(191, 414);
             this.button_huella_v2.Name = "button_huella_v2";
             this.button_huella_v2.Size = new System.Drawing.Size(75, 31);
             this.button_huella_v2.TabIndex = 47;
             this.button_huella_v2.Text = "Captura";
             this.button_huella_v2.UseVisualStyleBackColor = true;
-            // 
-            // huella_result_4_v2
-            // 
-            this.huella_result_4_v2.Location = new System.Drawing.Point(348, 218);
-            this.huella_result_4_v2.Name = "huella_result_4_v2";
-            this.huella_result_4_v2.Size = new System.Drawing.Size(26, 25);
-            this.huella_result_4_v2.TabIndex = 69;
-            this.huella_result_4_v2.TabStop = false;
+            this.button_huella_v2.Click += new System.EventHandler(this.button_huella_v2_Click);
             // 
             // button_fin
             // 
@@ -964,49 +824,25 @@ namespace App_Puerta
             this.button_fin.UseVisualStyleBackColor = true;
             this.button_fin.Click += new System.EventHandler(this.button_fin_Click);
             // 
-            // huella_result_3_v2
+            // label_huellas_V2
             // 
-            this.huella_result_3_v2.Location = new System.Drawing.Point(348, 187);
-            this.huella_result_3_v2.Name = "huella_result_3_v2";
-            this.huella_result_3_v2.Size = new System.Drawing.Size(26, 25);
-            this.huella_result_3_v2.TabIndex = 68;
-            this.huella_result_3_v2.TabStop = false;
-            // 
-            // label_huellas_v2
-            // 
-            this.label_huellas_v2.AutoSize = true;
-            this.label_huellas_v2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_huellas_v2.Location = new System.Drawing.Point(200, 349);
-            this.label_huellas_v2.Name = "label_huellas_v2";
-            this.label_huellas_v2.Size = new System.Drawing.Size(24, 25);
-            this.label_huellas_v2.TabIndex = 49;
-            this.label_huellas_v2.Text = "1";
-            // 
-            // huella_result_2_v2
-            // 
-            this.huella_result_2_v2.Location = new System.Drawing.Point(348, 156);
-            this.huella_result_2_v2.Name = "huella_result_2_v2";
-            this.huella_result_2_v2.Size = new System.Drawing.Size(26, 25);
-            this.huella_result_2_v2.TabIndex = 67;
-            this.huella_result_2_v2.TabStop = false;
+            this.label_huellas_V2.AutoSize = true;
+            this.label_huellas_V2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_huellas_V2.Location = new System.Drawing.Point(205, 448);
+            this.label_huellas_V2.Name = "label_huellas_V2";
+            this.label_huellas_V2.Size = new System.Drawing.Size(24, 25);
+            this.label_huellas_V2.TabIndex = 49;
+            this.label_huellas_V2.Text = "0";
             // 
             // label14
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(230, 349);
+            this.label14.Location = new System.Drawing.Point(224, 448);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(30, 25);
             this.label14.TabIndex = 50;
             this.label14.Text = "/5";
-            // 
-            // huella_result_1_v2
-            // 
-            this.huella_result_1_v2.Location = new System.Drawing.Point(348, 125);
-            this.huella_result_1_v2.Name = "huella_result_1_v2";
-            this.huella_result_1_v2.Size = new System.Drawing.Size(26, 25);
-            this.huella_result_1_v2.TabIndex = 66;
-            this.huella_result_1_v2.TabStop = false;
             // 
             // button_borrar_huellas_v2
             // 
@@ -1017,22 +853,18 @@ namespace App_Puerta
             this.button_borrar_huellas_v2.TabIndex = 65;
             this.button_borrar_huellas_v2.Text = "Borrar todas";
             this.button_borrar_huellas_v2.UseVisualStyleBackColor = true;
+            this.button_borrar_huellas_v2.Click += new System.EventHandler(this.button_borrar_huellas_v2_Click);
             // 
             // panel_cara_v2
             // 
             this.panel_cara_v2.Controls.Add(this.axAxisMediaControl_V2);
-            this.panel_cara_v2.Controls.Add(this.pictureBox14);
+            this.panel_cara_v2.Controls.Add(this.pictureBox_cara_v2);
             this.panel_cara_v2.Controls.Add(this.button_borrar_cara_v2);
             this.panel_cara_v2.Controls.Add(this.button_borrar_caras_v2);
-            this.panel_cara_v2.Controls.Add(this.cara_result_1_v2);
-            this.panel_cara_v2.Controls.Add(this.cara_result_2_v2);
-            this.panel_cara_v2.Controls.Add(this.cara_result_3_v2);
-            this.panel_cara_v2.Controls.Add(this.cara_result_4_v2);
-            this.panel_cara_v2.Controls.Add(this.cara_result_5_v2);
             this.panel_cara_v2.Controls.Add(this.label19);
             this.panel_cara_v2.Controls.Add(this.label17);
             this.panel_cara_v2.Controls.Add(this.button_cara_v2);
-            this.panel_cara_v2.Controls.Add(this.label_caras_v2);
+            this.panel_cara_v2.Controls.Add(this.label_caras_V2);
             this.panel_cara_v2.Controls.Add(this.button_cara_siguiente_v2);
             this.panel_cara_v2.Enabled = false;
             this.panel_cara_v2.Location = new System.Drawing.Point(0, 0);
@@ -1043,19 +875,20 @@ namespace App_Puerta
             // axAxisMediaControl_V2
             // 
             this.axAxisMediaControl_V2.Enabled = true;
-            this.axAxisMediaControl_V2.Location = new System.Drawing.Point(80, 80);
+            this.axAxisMediaControl_V2.Location = new System.Drawing.Point(24, 80);
             this.axAxisMediaControl_V2.Name = "axAxisMediaControl_V2";
             this.axAxisMediaControl_V2.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axAxisMediaControl_V2.OcxState")));
             this.axAxisMediaControl_V2.Size = new System.Drawing.Size(240, 320);
             this.axAxisMediaControl_V2.TabIndex = 64;
             // 
-            // pictureBox14
+            // pictureBox_cara_v2
             // 
-            this.pictureBox14.Location = new System.Drawing.Point(80, 80);
-            this.pictureBox14.Name = "pictureBox14";
-            this.pictureBox14.Size = new System.Drawing.Size(240, 320);
-            this.pictureBox14.TabIndex = 59;
-            this.pictureBox14.TabStop = false;
+            this.pictureBox_cara_v2.Location = new System.Drawing.Point(293, 173);
+            this.pictureBox_cara_v2.Name = "pictureBox_cara_v2";
+            this.pictureBox_cara_v2.Size = new System.Drawing.Size(112, 135);
+            this.pictureBox_cara_v2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox_cara_v2.TabIndex = 59;
+            this.pictureBox_cara_v2.TabStop = false;
             // 
             // button_borrar_cara_v2
             // 
@@ -1067,6 +900,7 @@ namespace App_Puerta
             this.button_borrar_cara_v2.TabIndex = 51;
             this.button_borrar_cara_v2.Text = "Borrar última";
             this.button_borrar_cara_v2.UseVisualStyleBackColor = true;
+            this.button_borrar_cara_v2.Click += new System.EventHandler(this.button_borrar_cara_Click);
             // 
             // button_borrar_caras_v2
             // 
@@ -1077,52 +911,13 @@ namespace App_Puerta
             this.button_borrar_caras_v2.TabIndex = 52;
             this.button_borrar_caras_v2.Text = "Borrar todas";
             this.button_borrar_caras_v2.UseVisualStyleBackColor = true;
-            // 
-            // cara_result_1_v2
-            // 
-            this.cara_result_1_v2.Location = new System.Drawing.Point(368, 181);
-            this.cara_result_1_v2.Name = "cara_result_1_v2";
-            this.cara_result_1_v2.Size = new System.Drawing.Size(26, 25);
-            this.cara_result_1_v2.TabIndex = 53;
-            this.cara_result_1_v2.TabStop = false;
-            // 
-            // cara_result_2_v2
-            // 
-            this.cara_result_2_v2.Location = new System.Drawing.Point(368, 212);
-            this.cara_result_2_v2.Name = "cara_result_2_v2";
-            this.cara_result_2_v2.Size = new System.Drawing.Size(26, 25);
-            this.cara_result_2_v2.TabIndex = 54;
-            this.cara_result_2_v2.TabStop = false;
-            // 
-            // cara_result_3_v2
-            // 
-            this.cara_result_3_v2.Location = new System.Drawing.Point(368, 243);
-            this.cara_result_3_v2.Name = "cara_result_3_v2";
-            this.cara_result_3_v2.Size = new System.Drawing.Size(26, 25);
-            this.cara_result_3_v2.TabIndex = 55;
-            this.cara_result_3_v2.TabStop = false;
-            // 
-            // cara_result_4_v2
-            // 
-            this.cara_result_4_v2.Location = new System.Drawing.Point(368, 274);
-            this.cara_result_4_v2.Name = "cara_result_4_v2";
-            this.cara_result_4_v2.Size = new System.Drawing.Size(26, 25);
-            this.cara_result_4_v2.TabIndex = 56;
-            this.cara_result_4_v2.TabStop = false;
-            // 
-            // cara_result_5_v2
-            // 
-            this.cara_result_5_v2.Location = new System.Drawing.Point(368, 305);
-            this.cara_result_5_v2.Name = "cara_result_5_v2";
-            this.cara_result_5_v2.Size = new System.Drawing.Size(26, 25);
-            this.cara_result_5_v2.TabIndex = 57;
-            this.cara_result_5_v2.TabStop = false;
+            this.button_borrar_caras_v2.Click += new System.EventHandler(this.button_borrar_caras_v2_Click);
             // 
             // label19
             // 
             this.label19.AutoSize = true;
             this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(131, 13);
+            this.label19.Location = new System.Drawing.Point(147, 30);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(76, 25);
             this.label19.TabIndex = 58;
@@ -1132,7 +927,7 @@ namespace App_Puerta
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(193, 462);
+            this.label17.Location = new System.Drawing.Point(188, 462);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(30, 25);
             this.label17.TabIndex = 63;
@@ -1147,16 +942,17 @@ namespace App_Puerta
             this.button_cara_v2.TabIndex = 60;
             this.button_cara_v2.Text = "Captura";
             this.button_cara_v2.UseVisualStyleBackColor = true;
+            this.button_cara_v2.Click += new System.EventHandler(this.button_cara_v2_Click);
             // 
-            // label_caras_v2
+            // label_caras_V2
             // 
-            this.label_caras_v2.AutoSize = true;
-            this.label_caras_v2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_caras_v2.Location = new System.Drawing.Point(163, 462);
-            this.label_caras_v2.Name = "label_caras_v2";
-            this.label_caras_v2.Size = new System.Drawing.Size(24, 25);
-            this.label_caras_v2.TabIndex = 62;
-            this.label_caras_v2.Text = "1";
+            this.label_caras_V2.AutoSize = true;
+            this.label_caras_V2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_caras_V2.Location = new System.Drawing.Point(171, 462);
+            this.label_caras_V2.Name = "label_caras_V2";
+            this.label_caras_V2.Size = new System.Drawing.Size(24, 25);
+            this.label_caras_V2.TabIndex = 62;
+            this.label_caras_V2.Text = "0";
             // 
             // button_cara_siguiente_v2
             // 
@@ -1184,6 +980,16 @@ namespace App_Puerta
             this.timer_cara_reclutamiento.Interval = 50;
             this.timer_cara_reclutamiento.Tick += new System.EventHandler(this.timer_cara_reclutamiento_Tick);
             // 
+            // timer_cara_v1
+            // 
+            this.timer_cara_v1.Interval = 50;
+            this.timer_cara_v1.Tick += new System.EventHandler(this.timer_cara_v1_Tick);
+            // 
+            // timer_cara_v2
+            // 
+            this.timer_cara_v2.Interval = 50;
+            this.timer_cara_v2.Tick += new System.EventHandler(this.timer_cara_v2_Tick);
+            // 
             // App_Puerta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1209,39 +1015,19 @@ namespace App_Puerta
             this.panel_cara_v1.ResumeLayout(false);
             this.panel_cara_v1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.axAxisMediaControl_V1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cara_result_5_v1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cara_result_4_v1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cara_result_1_v1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cara_result_3_v1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cara_result_2_v1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_cara_v1)).EndInit();
             this.panel_huella_v1.ResumeLayout(false);
             this.panel_huella_v1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.huella_result_5_v1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.huella_result_4_v1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.huella_result_3_v1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.huella_result_1_v1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.huella_result_2_v1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_huella_v1)).EndInit();
             this.tab_visita2.ResumeLayout(false);
             this.tab_visita2.PerformLayout();
             this.panel_huella_v2.ResumeLayout(false);
             this.panel_huella_v2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.huella_result_5_v2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.huella_result_4_v2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.huella_result_3_v2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.huella_result_2_v2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.huella_result_1_v2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_huella_v2)).EndInit();
             this.panel_cara_v2.ResumeLayout(false);
             this.panel_cara_v2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.axAxisMediaControl_V2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox14)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cara_result_1_v2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cara_result_2_v2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cara_result_3_v2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cara_result_4_v2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cara_result_5_v2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_cara_v2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1252,7 +1038,7 @@ namespace App_Puerta
         private System.Windows.Forms.TabControl Controles;
         private System.Windows.Forms.TabPage tab_inicio;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox_nombre_inicio;
+        private System.Windows.Forms.TextBox textBox_ID_inicio;
         private System.Windows.Forms.Button button_existente;
         private System.Windows.Forms.Button button_nuevo;
         private System.Windows.Forms.TabPage tab_reclutamiento;
@@ -1283,54 +1069,34 @@ namespace App_Puerta
         private System.Windows.Forms.Button button_borrar_huellas_v1;
         private System.Windows.Forms.Button button_borrar_huella_v1;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label_huellas_v1;
+        private System.Windows.Forms.Label label_huellas_V1;
         private System.Windows.Forms.Button button_huella_siguiente_v1;
         private System.Windows.Forms.Button button_huella_v1;
-        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.PictureBox pictureBox_huella_v1;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.PictureBox cara_result_5_v1;
-        private System.Windows.Forms.PictureBox cara_result_4_v1;
-        private System.Windows.Forms.PictureBox cara_result_3_v1;
-        private System.Windows.Forms.PictureBox cara_result_2_v1;
-        private System.Windows.Forms.PictureBox cara_result_1_v1;
-        private System.Windows.Forms.PictureBox huella_result_5_v1;
-        private System.Windows.Forms.PictureBox huella_result_4_v1;
-        private System.Windows.Forms.PictureBox huella_result_3_v1;
-        private System.Windows.Forms.PictureBox huella_result_2_v1;
-        private System.Windows.Forms.PictureBox huella_result_1_v1;
         private System.Windows.Forms.Button button_borrar_caras_v1;
         private System.Windows.Forms.Button button_borrar_cara_v1;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label_caras_v1;
+        private System.Windows.Forms.Label label_caras_V1;
         private System.Windows.Forms.Button button_final_v1;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button button_cara_v1;
+        private System.Windows.Forms.PictureBox pictureBox_cara_v1;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.PictureBox huella_result_5_v2;
-        private System.Windows.Forms.PictureBox huella_result_4_v2;
-        private System.Windows.Forms.PictureBox huella_result_3_v2;
-        private System.Windows.Forms.PictureBox huella_result_2_v2;
-        private System.Windows.Forms.PictureBox huella_result_1_v2;
         private System.Windows.Forms.Button button_borrar_huellas_v2;
         private System.Windows.Forms.Button button_borrar_huella_v2;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label label_caras_v2;
+        private System.Windows.Forms.Label label_caras_V2;
         private System.Windows.Forms.Button button_cara_siguiente_v2;
         private System.Windows.Forms.Button button_cara_v2;
-        private System.Windows.Forms.PictureBox pictureBox14;
+        private System.Windows.Forms.PictureBox pictureBox_cara_v2;
         private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.PictureBox cara_result_5_v2;
-        private System.Windows.Forms.PictureBox cara_result_4_v2;
-        private System.Windows.Forms.PictureBox cara_result_3_v2;
-        private System.Windows.Forms.PictureBox cara_result_2_v2;
-        private System.Windows.Forms.PictureBox cara_result_1_v2;
         private System.Windows.Forms.Button button_borrar_caras_v2;
         private System.Windows.Forms.Button button_borrar_cara_v2;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label_huellas_v2;
+        private System.Windows.Forms.Label label_huellas_V2;
         private System.Windows.Forms.Button button_fin;
         private System.Windows.Forms.Button button_huella_v2;
-        private System.Windows.Forms.PictureBox pictureBox8;
+        private System.Windows.Forms.PictureBox pictureBox_huella_v2;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Panel panel_huella;
@@ -1347,6 +1113,8 @@ namespace App_Puerta
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label12;
         private Timer timer_cara_reclutamiento;
+        private Timer timer_cara_v1;
+        private Timer timer_cara_v2;
     }
 }
 
