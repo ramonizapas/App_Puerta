@@ -114,6 +114,9 @@ namespace App_Puerta
             this.timer_cara_reclutamiento = new System.Windows.Forms.Timer(this.components);
             this.timer_cara_v1 = new System.Windows.Forms.Timer(this.components);
             this.timer_cara_v2 = new System.Windows.Forms.Timer(this.components);
+            this.timeOutCara_R = new System.Windows.Forms.Timer(this.components);
+            this.timeOutCara_V1 = new System.Windows.Forms.Timer(this.components);
+            this.timeOutCara_V2 = new System.Windows.Forms.Timer(this.components);
             this.Controles.SuspendLayout();
             this.tab_inicio.SuspendLayout();
             this.tab_reclutamiento.SuspendLayout();
@@ -990,6 +993,21 @@ namespace App_Puerta
             this.timer_cara_v2.Interval = 50;
             this.timer_cara_v2.Tick += new System.EventHandler(this.timer_cara_v2_Tick);
             // 
+            // timeOutCara_R
+            // 
+            this.timeOutCara_R.Interval = 10000;
+            this.timeOutCara_R.Tick += new System.EventHandler(this.timeOutCara_R_Tick);
+            // 
+            // timeOutCara_V1
+            // 
+            this.timeOutCara_V1.Interval = 10000;
+            this.timeOutCara_V1.Tick += new System.EventHandler(this.timeOutCara_R_Tick);
+            // 
+            // timeOutCara_V2
+            // 
+            this.timeOutCara_V2.Interval = 10000;
+            this.timeOutCara_V2.Tick += new System.EventHandler(this.timeOutCara_R_Tick);
+            // 
             // App_Puerta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1115,6 +1133,9 @@ namespace App_Puerta
         private Timer timer_cara_reclutamiento;
         private Timer timer_cara_v1;
         private Timer timer_cara_v2;
+        private Timer timeOutCara_R;
+        private Timer timeOutCara_V1;
+        private Timer timeOutCara_V2;
     }
 }
 

@@ -45,6 +45,8 @@ namespace App_Puerta
         string verificacion1;
         string verificacion2;
         int numMuestras;
+        bool timeoutHuella;
+        bool timeoutCara;
         HaarCascade haar;
         string IPcam;
 
@@ -60,7 +62,9 @@ namespace App_Puerta
             pass = "admin";
             mediaType = "mjpeg";
             IP = "10.10.10.104"; // LEER DE FICHERO            
-            id = "";            
+            id = "";
+            timeoutHuella = false;
+            timeoutCara = false;
             log("Inicio de la app");
             numMuestras = 5;
             escenario1 = "001";
@@ -195,7 +199,15 @@ namespace App_Puerta
 
             string nombreArchivo = id + "_" + escenario1 + "_" + muestraPadZeros + "_" + "RE" + "_" + resultado + formatoHuellas;
             
-            Bitmap bitmapHuella = capturaHuella();            
+            Bitmap bitmapHuella = capturaHuella();
+
+            if (timeoutHuella) {
+
+                //TIMEOUT EN LA HUELLA RECLUTAMIENTO
+                timeoutHuella = false;
+                return;
+            }
+
             bitmapHuella.Save(dirHuellas + nombreArchivo, ImageFormat.Bmp);
             pictureBox_huella_reclutamiento.Image = bitmapHuella;
             labelHuella = labelHuella + 1;
@@ -276,7 +288,8 @@ namespace App_Puerta
             capture = new Capture(IPcam);
             timer_cara_reclutamiento.Enabled = true;
             timer_cara_reclutamiento.Start();
-
+            timeOutCara_R.Enabled = true;
+            timeOutCara_R.Start();
         }
 
         private void button_borrar_cara_Click(object sender, EventArgs e)
@@ -337,7 +350,21 @@ namespace App_Puerta
                 //timer_cara_reclutamiento.Stop();
                 timer_cara_reclutamiento.Stop();
                 timer_cara_reclutamiento.Enabled = false;
+                timeOutCara_R.Stop();
+                timeOutCara_R.Enabled = false;                
                 button_cara.Enabled = false;
+                return;
+            }
+
+            if (timeoutCara) {
+
+                timeoutCara = false;
+                timeOutCara_R.Stop();
+                timer_cara_reclutamiento.Stop();
+                timer_cara_reclutamiento.Enabled = false;
+                timeOutCara_R.Enabled = false;
+                MessageBox.Show("¡¡Timeout!!");
+                //TIMEOUT CARA
                 return;
             }
 
@@ -388,12 +415,18 @@ namespace App_Puerta
 
                         timer_cara_reclutamiento.Stop();
                         timer_cara_reclutamiento.Enabled = false;
+                        timeOutCara_R.Stop();
+                        timeOutCara_R.Enabled = false;
                         capture.Dispose();
                     }
                 }
             }    
         }
-        
+
+        private void timeOutCara_R_Tick(object sender, EventArgs e)
+        {
+            timeoutCara = true;
+        }
 
         private void button_final_reclutamiento_Click(object sender, EventArgs e)
         {
@@ -465,6 +498,14 @@ namespace App_Puerta
             string nombreArchivo = id + "_" + escenario1 + "_" + muestraPadZeros + "_" + "V1" + "_" + resultado + formatoHuellas;
 
             Bitmap bitmapHuella = capturaHuella();
+
+            if (timeoutHuella)
+            {
+                //TIMEOUT EN LA HUELLA VISITA 1
+                timeoutHuella = false;
+                return;
+            }
+
             bitmapHuella.Save(dirHuellas + nombreArchivo, ImageFormat.Bmp);
             pictureBox_huella_v1.Image = bitmapHuella;
             labelHuella = labelHuella + 1;
@@ -522,6 +563,8 @@ namespace App_Puerta
             capture = new Capture(IPcam);
             timer_cara_v1.Enabled = true;
             timer_cara_v1.Start();
+            timeOutCara_V1.Enabled = true;
+            timeOutCara_V1.Start();
         }
 
         private void button_borrar_caras_v1_Click(object sender, EventArgs e)
@@ -558,9 +601,23 @@ namespace App_Puerta
 
             if (carasPrevias.Length == 5)
             {                
-                timer_cara_reclutamiento.Stop();
-                timer_cara_reclutamiento.Enabled = false;
+                timer_cara_v1.Stop();
+                timer_cara_v1.Enabled = false;
+                timeOutCara_V1.Stop();
+                timeOutCara_V1.Enabled = false;
                 button_cara.Enabled = false;
+                return;
+            }
+
+            if (timeoutCara)
+            {
+                timeoutCara = false;
+                timeOutCara_V1.Stop();
+                timeOutCara_V1.Enabled = false;
+                timer_cara_v1.Stop();
+                timer_cara_v1.Enabled = false;
+                MessageBox.Show("¡¡Timeout!!");
+                //TIMEOUT CARA
                 return;
             }
 
@@ -609,13 +666,14 @@ namespace App_Puerta
 
                         timer_cara_v1.Stop();
                         timer_cara_v1.Enabled = false;
+                        timeOutCara_V1.Stop();
+                        timeOutCara_V1.Enabled = false;
                         capture.Dispose();
                     }
                 }
             }
         }
-
-
+        
         private void button_final_v1_Click(object sender, EventArgs e)
         {
             string[] caras = Directory.GetFiles(dirCaras, id + "*").Select(Path.GetFileName).ToArray();
@@ -697,6 +755,8 @@ namespace App_Puerta
             capture = new Capture(IPcam);
             timer_cara_v2.Enabled = true;
             timer_cara_v2.Start();
+            timeOutCara_V2.Enabled = true;
+            timeOutCara_V2.Start();
         }
 
         private void button_borrar_caras_v2_Click(object sender, EventArgs e)
@@ -736,6 +796,19 @@ namespace App_Puerta
                 timer_cara_v2.Stop();
                 timer_cara_v2.Enabled = false;
                 button_cara_v2.Enabled = false;
+                timeOutCara_V2.Stop();
+                timeOutCara_V2.Enabled = false;
+                return;
+            }
+            if (timeoutCara)
+            {
+                timeoutCara = false;
+                timeOutCara_V2.Stop();
+                timeOutCara_V2.Enabled = false;
+                timer_cara_v2.Stop();
+                timer_cara_v2.Enabled = false;
+                MessageBox.Show("¡¡Timeout!!");
+                //TIMEOUT CARA
                 return;
             }
 
@@ -784,6 +857,8 @@ namespace App_Puerta
 
                         timer_cara_v2.Stop();
                         timer_cara_v2.Enabled = false;
+                        timeOutCara_V1.Stop();
+                        timeOutCara_V1.Enabled = false;
                         capture.Dispose();
                     }
                 }
@@ -800,7 +875,8 @@ namespace App_Puerta
             pictureBox_cara_v2.Image = null;
         }
 
-            //HUELLA
+        
+        //HUELLA
 
         private void button_huella_v2_Click(object sender, EventArgs e)
         {
@@ -831,6 +907,14 @@ namespace App_Puerta
             string nombreArchivo = id + "_" + escenario1 + "_" + muestraPadZeros + "_" + "V2" + "_" + resultado + formatoHuellas;
 
             Bitmap bitmapHuella = capturaHuella();
+
+            if (timeoutHuella)
+            {
+                //TIMEOUT EN LA HUELLA VISITA 2
+                timeoutHuella = false;
+                return;
+            }
+
             bitmapHuella.Save(dirHuellas + nombreArchivo, ImageFormat.Bmp);
             pictureBox_huella_v2.Image = bitmapHuella;
             labelHuella = labelHuella + 1;
@@ -1085,8 +1169,10 @@ namespace App_Puerta
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show("Excepción capturando la huella" + e.ToString());
-                    log("Excepción capturando la huella");
+                    codigoError = EikonTouchClass.Terminate();
+                    MessageBox.Show("¡¡Timeout!!");
+                    log("Timeout la huella");
+                    timeoutHuella = true;
                     return null;
                 }
 
@@ -1250,6 +1336,8 @@ namespace App_Puerta
         }
 
         
+
+
 
         /********/
 
