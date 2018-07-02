@@ -117,6 +117,9 @@ namespace App_Puerta
             this.timeOutCara_R = new System.Windows.Forms.Timer(this.components);
             this.timeOutCara_V1 = new System.Windows.Forms.Timer(this.components);
             this.timeOutCara_V2 = new System.Windows.Forms.Timer(this.components);
+            this.textBox_IP = new System.Windows.Forms.TextBox();
+            this.IP_label = new System.Windows.Forms.Label();
+            this.button_IP = new System.Windows.Forms.Button();
             this.Controles.SuspendLayout();
             this.tab_inicio.SuspendLayout();
             this.tab_reclutamiento.SuspendLayout();
@@ -154,6 +157,9 @@ namespace App_Puerta
             // 
             // tab_inicio
             // 
+            this.tab_inicio.Controls.Add(this.button_IP);
+            this.tab_inicio.Controls.Add(this.IP_label);
+            this.tab_inicio.Controls.Add(this.textBox_IP);
             this.tab_inicio.Controls.Add(this.button_habilitar);
             this.tab_inicio.Controls.Add(this.label1);
             this.tab_inicio.Controls.Add(this.textBox_ID_inicio);
@@ -1008,6 +1014,36 @@ namespace App_Puerta
             this.timeOutCara_V2.Interval = 10000;
             this.timeOutCara_V2.Tick += new System.EventHandler(this.timeOutCara_R_Tick);
             // 
+            // textBox_IP
+            // 
+            this.textBox_IP.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox_IP.Location = new System.Drawing.Point(556, 507);
+            this.textBox_IP.Name = "textBox_IP";
+            this.textBox_IP.Size = new System.Drawing.Size(147, 26);
+            this.textBox_IP.TabIndex = 5;
+            this.textBox_IP.Text = "10.10.10.104";
+            this.textBox_IP.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // IP_label
+            // 
+            this.IP_label.AutoSize = true;
+            this.IP_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IP_label.Location = new System.Drawing.Point(452, 509);
+            this.IP_label.Name = "IP_label";
+            this.IP_label.Size = new System.Drawing.Size(98, 24);
+            this.IP_label.TabIndex = 6;
+            this.IP_label.Text = "IP_cámara";
+            // 
+            // button_IP
+            // 
+            this.button_IP.Location = new System.Drawing.Point(709, 508);
+            this.button_IP.Name = "button_IP";
+            this.button_IP.Size = new System.Drawing.Size(75, 23);
+            this.button_IP.TabIndex = 7;
+            this.button_IP.Text = "Cambiar IP";
+            this.button_IP.UseVisualStyleBackColor = true;
+            this.button_IP.Click += new System.EventHandler(this.button_IP_Click);
+            // 
             // App_Puerta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1136,6 +1172,9 @@ namespace App_Puerta
         private Timer timeOutCara_R;
         private Timer timeOutCara_V1;
         private Timer timeOutCara_V2;
+        private Label IP_label;
+        private TextBox textBox_IP;
+        private Button button_IP;
     }
 }
 

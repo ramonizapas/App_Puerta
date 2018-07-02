@@ -22,6 +22,7 @@ using System.IO;
 using System.Drawing.Imaging;
 using System.Threading;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace App_Puerta
 {
@@ -49,6 +50,7 @@ namespace App_Puerta
         bool timeoutCara;
         HaarCascade haar;
         string IPcam;
+        Stopwatch stopwatch_cara;
 
 
         public App_Puerta()
@@ -73,7 +75,8 @@ namespace App_Puerta
             verificacion1 = "V1";
             verificacion2 = "V2";            
             haar = new HaarCascade(dirLibCaras);
-            IPcam = "http://root:admin@10.10.10.104/axis-cgi/mjpg/video.cgi?x.mjpeg";            
+            IPcam = "http://root:admin@" + IP + "/axis-cgi/mjpg/video.cgi?x.mjpeg";
+            stopwatch_cara = new Stopwatch();
         }
 
         /* EVENTOS DE BOTÓN */
@@ -114,6 +117,9 @@ namespace App_Puerta
                     button_cara_v2.Enabled = true;
                     button_cara_siguiente_v2.Enabled = true;
                     Controles.SelectedTab = tab_visita2;
+                    StreamWriter sw = File.AppendText(id + ".txt");
+                    sw.WriteLine("VISITA 2 CARA");
+                    sw.Close();
                 }
                 if (fase == "V2")
                 {
@@ -158,6 +164,10 @@ namespace App_Puerta
                     button_huella.Enabled = true;
                     button_huella_siguiente.Enabled = true;
                     panel_ID.Enabled = false;
+                    StreamWriter sw = File.AppendText(id + ".txt");
+                    sw.WriteLine("");
+                    sw.WriteLine("RECLUTAMIENTO HUELLA");
+                    sw.Close();
                 }
                 else if (registro(textBox_nombre.Text, textBox_ID.Text) == -1) {
                     MessageBox.Show("Error al crear el usuario");
@@ -174,6 +184,7 @@ namespace App_Puerta
 
         private void button_huella_Click(object sender, EventArgs e)
         {
+            Stopwatch stopwatch = Stopwatch.StartNew();
             int muestra = 1;
             int resultado = 1;                        
             int labelHuella = Int32.Parse(label_huellas_reclutamiento.Text);
@@ -198,15 +209,26 @@ namespace App_Puerta
             muestraPadZeros = muestraPadZeros.PadLeft(3, '0');
 
             string nombreArchivo = id + "_" + escenario1 + "_" + muestraPadZeros + "_" + "RE" + "_" + resultado + formatoHuellas;
-            
+                        
             Bitmap bitmapHuella = capturaHuella();
+            stopwatch.Stop();
 
-            if (timeoutHuella) {
-
+            StreamWriter sw = File.AppendText(id + ".txt");
+            
+            if (timeoutHuella)
+            {
                 //TIMEOUT EN LA HUELLA RECLUTAMIENTO
                 timeoutHuella = false;
+                sw.WriteLine("-1"); // TIMEOUT
+                sw.Close();
                 return;
             }
+            else {
+                long time = stopwatch.ElapsedMilliseconds;
+                sw.WriteLine(time.ToString()); // TIMEOUT
+            }
+
+            sw.Close();            
 
             bitmapHuella.Save(dirHuellas + nombreArchivo, ImageFormat.Bmp);
             pictureBox_huella_reclutamiento.Image = bitmapHuella;
@@ -277,6 +299,9 @@ namespace App_Puerta
             button_cara.Enabled = true;
             button_final_reclutamiento.Enabled = true;
             button_huella_siguiente.Enabled = false;
+            StreamWriter sw = File.AppendText(id + ".txt");
+            sw.WriteLine("RECLUTAMIENTO CARA");
+            sw.Close();
             //timer_cara_reclutamiento.Enabled = true;
             //timer_cara_reclutamiento.Start();
         }
@@ -284,12 +309,20 @@ namespace App_Puerta
             //CARA
 
         private void button_cara_Click(object sender, EventArgs e)
-        {
-            capture = new Capture(IPcam);
+        {            
+            stopwatch_cara.Restart();
+            try {
+                capture = new Capture(IPcam);
+            }
+            catch (Exception) {
+                MessageBox.Show("No se encuentra la cámara");
+                return;
+            }
+            
             timer_cara_reclutamiento.Enabled = true;
             timer_cara_reclutamiento.Start();
             timeOutCara_R.Enabled = true;
-            timeOutCara_R.Start();
+            timeOutCara_R.Start();            
         }
 
         private void button_borrar_cara_Click(object sender, EventArgs e)
@@ -346,8 +379,6 @@ namespace App_Puerta
 
             if (carasPrevias.Length == 5)
             {
-                //MessageBox.Show("Reclutamiento terminado, haga click en Siguiente para comenzar la VISITA 1");
-                //timer_cara_reclutamiento.Stop();
                 timer_cara_reclutamiento.Stop();
                 timer_cara_reclutamiento.Enabled = false;
                 timeOutCara_R.Stop();
@@ -359,10 +390,15 @@ namespace App_Puerta
             if (timeoutCara) {
 
                 timeoutCara = false;
-                timeOutCara_R.Stop();
+                timeOutCara_R.Stop();                
                 timer_cara_reclutamiento.Stop();
                 timer_cara_reclutamiento.Enabled = false;
                 timeOutCara_R.Enabled = false;
+                
+                StreamWriter sw = File.AppendText(id + ".txt");
+                sw.WriteLine("-1"); // TIMEOUT
+                sw.Close();
+                stopwatch_cara.Stop();
                 MessageBox.Show("¡¡Timeout!!");
                 //TIMEOUT CARA
                 return;
@@ -407,17 +443,24 @@ namespace App_Puerta
                         labelCara = labelCara + 1;
                         label_caras_reclutamiento.Text = "" + labelCara;
 
+                        stopwatch_cara.Stop();
+                        StreamWriter sw = File.AppendText(id + ".txt");
+                        long time = stopwatch_cara.ElapsedMilliseconds;
+                        sw.WriteLine(time.ToString());                   
+                        sw.Close();
+                                                
+                        timer_cara_reclutamiento.Stop();
+                        timer_cara_reclutamiento.Enabled = false;
+                        timeOutCara_R.Stop();
+                        timeOutCara_R.Enabled = false;
+                        capture.Dispose();
+
                         if (muestra == 5)
                         {
                             MessageBox.Show("Fin del reclutamiento, haga click en Siguiente para comenzar la VISITA 1");
                             button_huella.Enabled = false;
                         }
 
-                        timer_cara_reclutamiento.Stop();
-                        timer_cara_reclutamiento.Enabled = false;
-                        timeOutCara_R.Stop();
-                        timeOutCara_R.Enabled = false;
-                        capture.Dispose();
                     }
                 }
             }    
@@ -463,6 +506,9 @@ namespace App_Puerta
             label_huellas_reclutamiento.Text = "0";
             label_caras_reclutamiento.Text = "0";
             log("Usuario " + id + " reclutado correctamente");
+            StreamWriter sw = File.AppendText(id + ".txt");
+            sw.WriteLine("VISITA 1 HUELLA");
+            sw.Close();
         }
 
         //VISITA 1
@@ -471,6 +517,8 @@ namespace App_Puerta
 
         private void button_huella_v1_Click(object sender, EventArgs e)
         {
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
             int muestra = 1;
             int resultado = 1;
             int labelHuella = Int32.Parse(label_huellas_V1.Text);
@@ -496,15 +544,27 @@ namespace App_Puerta
             muestraPadZeros = muestraPadZeros.PadLeft(3, '0');
 
             string nombreArchivo = id + "_" + escenario1 + "_" + muestraPadZeros + "_" + "V1" + "_" + resultado + formatoHuellas;
-
+            
             Bitmap bitmapHuella = capturaHuella();
+            stopwatch.Stop();
+
+            StreamWriter sw = File.AppendText(id + ".txt");
 
             if (timeoutHuella)
             {
-                //TIMEOUT EN LA HUELLA VISITA 1
+                //TIMEOUT EN LA HUELLA
                 timeoutHuella = false;
+                sw.WriteLine("-1"); // TIMEOUT
+                sw.Close();
                 return;
             }
+            else
+            {
+                long time = stopwatch.ElapsedMilliseconds;
+                sw.WriteLine(time.ToString()); // TIMEOUT
+            }
+
+            sw.Close();
 
             bitmapHuella.Save(dirHuellas + nombreArchivo, ImageFormat.Bmp);
             pictureBox_huella_v1.Image = bitmapHuella;
@@ -554,17 +614,27 @@ namespace App_Puerta
             button_final_v1.Enabled = true;
             button_huella_siguiente_v1.Enabled = false;
             pictureBox_huella_v1.Image = null;
+            StreamWriter sw = File.AppendText(id + ".txt");
+            sw.WriteLine("VISITA 1 CARA");
+            sw.Close();
         }
 
             //CARA
 
         private void button_cara_v1_Click(object sender, EventArgs e)
         {
-            capture = new Capture(IPcam);
+            stopwatch_cara.Restart();
+            try { 
+                capture = new Capture(IPcam);
+            }
+                catch (Exception) {
+                    MessageBox.Show("No se encuentra la cámara");
+                    return;
+            }
             timer_cara_v1.Enabled = true;
             timer_cara_v1.Start();
             timeOutCara_V1.Enabled = true;
-            timeOutCara_V1.Start();
+            timeOutCara_V1.Start();            
         }
 
         private void button_borrar_caras_v1_Click(object sender, EventArgs e)
@@ -616,6 +686,11 @@ namespace App_Puerta
                 timeOutCara_V1.Enabled = false;
                 timer_cara_v1.Stop();
                 timer_cara_v1.Enabled = false;
+
+                StreamWriter sw = File.AppendText(id + ".txt");
+                sw.WriteLine("-1"); // TIMEOUT
+                sw.Close();
+                stopwatch_cara.Stop();
                 MessageBox.Show("¡¡Timeout!!");
                 //TIMEOUT CARA
                 return;
@@ -658,17 +733,23 @@ namespace App_Puerta
                         labelCara = labelCara + 1;
                         label_caras_V1.Text = "" + labelCara;
 
-                        if (muestra == 5)
-                        {
-                            MessageBox.Show("Fin de la VISITA 1. Pulse Siguiente");
-                            button_cara_v1.Enabled = false;
-                        }
+                        stopwatch_cara.Stop();
+                        StreamWriter sw = File.AppendText(id + ".txt");
+                        long time = stopwatch_cara.ElapsedMilliseconds;
+                        sw.WriteLine(time.ToString());
+                        sw.Close();
 
                         timer_cara_v1.Stop();
                         timer_cara_v1.Enabled = false;
                         timeOutCara_V1.Stop();
                         timeOutCara_V1.Enabled = false;
                         capture.Dispose();
+
+                        if (muestra == 5)
+                        {
+                            MessageBox.Show("Fin de la VISITA 1. Pulse Siguiente");
+                            button_cara_v1.Enabled = false;
+                        }
                     }
                 }
             }
@@ -752,11 +833,20 @@ namespace App_Puerta
 
         private void button_cara_v2_Click(object sender, EventArgs e)
         {
-            capture = new Capture(IPcam);
+            stopwatch_cara.Restart();
+            try
+            {
+                capture = new Capture(IPcam);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("No se encuentra la cámara");
+                return;
+            }
             timer_cara_v2.Enabled = true;
             timer_cara_v2.Start();
             timeOutCara_V2.Enabled = true;
-            timeOutCara_V2.Start();
+            timeOutCara_V2.Start();            
         }
 
         private void button_borrar_caras_v2_Click(object sender, EventArgs e)
@@ -807,6 +897,11 @@ namespace App_Puerta
                 timeOutCara_V2.Enabled = false;
                 timer_cara_v2.Stop();
                 timer_cara_v2.Enabled = false;
+
+                StreamWriter sw = File.AppendText(id + ".txt");
+                sw.WriteLine("-1"); // TIMEOUT
+                sw.Close();
+                stopwatch_cara.Stop();
                 MessageBox.Show("¡¡Timeout!!");
                 //TIMEOUT CARA
                 return;
@@ -849,17 +944,23 @@ namespace App_Puerta
                         labelCara = labelCara + 1;
                         label_caras_V2.Text = "" + labelCara;
 
+                        stopwatch_cara.Stop();
+                        StreamWriter sw = File.AppendText(id + ".txt");
+                        long time = stopwatch_cara.ElapsedMilliseconds;
+                        sw.WriteLine(time.ToString());
+                        sw.Close();
+
+                        timer_cara_v2.Stop();
+                        timer_cara_v2.Enabled = false;
+                        timeOutCara_V2.Stop();
+                        timeOutCara_V2.Enabled = false;
+                        capture.Dispose();
+
                         if (muestra == 5)
                         {
                             MessageBox.Show("Fin de la cara en la VISITA 2, pulse siguiente");
                             button_cara_v2.Enabled = false;
                         }
-
-                        timer_cara_v2.Stop();
-                        timer_cara_v2.Enabled = false;
-                        timeOutCara_V1.Stop();
-                        timeOutCara_V1.Enabled = false;
-                        capture.Dispose();
                     }
                 }
             }
@@ -873,6 +974,9 @@ namespace App_Puerta
             button_fin.Enabled = true;
             panel_huella_v2.Enabled = true;
             pictureBox_cara_v2.Image = null;
+            StreamWriter sw = File.AppendText(id + ".txt");
+            sw.WriteLine("VISITA 2 HUELLA");
+            sw.Close();
         }
 
         
@@ -880,6 +984,8 @@ namespace App_Puerta
 
         private void button_huella_v2_Click(object sender, EventArgs e)
         {
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
             int muestra = 1;
             int resultado = 1;
             int labelHuella = Int32.Parse(label_huellas_V2.Text);
@@ -905,15 +1011,27 @@ namespace App_Puerta
             muestraPadZeros = muestraPadZeros.PadLeft(3, '0');
 
             string nombreArchivo = id + "_" + escenario1 + "_" + muestraPadZeros + "_" + "V2" + "_" + resultado + formatoHuellas;
-
+            
             Bitmap bitmapHuella = capturaHuella();
+            stopwatch.Stop();
+
+            StreamWriter sw = File.AppendText(id + ".txt");
 
             if (timeoutHuella)
             {
-                //TIMEOUT EN LA HUELLA VISITA 2
+                //TIMEOUT EN LA HUELLA
                 timeoutHuella = false;
+                sw.WriteLine("-1"); // TIMEOUT
+                sw.Close();
                 return;
             }
+            else
+            {
+                long time = stopwatch.ElapsedMilliseconds;
+                sw.WriteLine(time.ToString()); // TIMEOUT
+            }
+
+            sw.Close();
 
             bitmapHuella.Save(dirHuellas + nombreArchivo, ImageFormat.Bmp);
             pictureBox_huella_v2.Image = bitmapHuella;
@@ -1083,6 +1201,10 @@ namespace App_Puerta
             }
 
             log("Usuario " + nuevoID + " creado");
+
+            string destPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, nuevoID + ".txt");            
+            File.WriteAllText(destPath, nuevoID + "_" + nombre + "_" + dni);
+
             return numAnterior;
         }
 
@@ -1335,7 +1457,14 @@ namespace App_Puerta
             w.Close();
         }
 
-        
+        private void button_IP_Click(object sender, EventArgs e)
+        {
+            IP = textBox_IP.Text;
+            IPcam = "http://root:admin@" + IP + "/axis-cgi/mjpg/video.cgi?x.mjpeg";
+            MessageBox.Show("Nueva IP: " + IP);
+        }
+
+
 
 
 
