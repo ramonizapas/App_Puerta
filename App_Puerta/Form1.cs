@@ -1,28 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-
-using EikonLibrary;
 using EikonTouchLibrary;
-
 using Emgu.CV;
 using Emgu.CV.Structure;
 using Emgu.CV.CvEnum;
-using Emgu.CV.Features2D;
-using Emgu.CV.Flann;
-using Emgu.CV.Util;
-
 using System.IO;
 using System.Drawing.Imaging;
-using System.Threading;
-using System.Runtime.InteropServices;
 using System.Diagnostics;
+using InTheHand.Net;
+using InTheHand.Net.Sockets;
+using InTheHand.Net.Bluetooth;
+using System.Collections.Generic;
+using System.Management;
+using System.Net.Sockets;
 
 namespace App_Puerta
 {
@@ -42,24 +35,20 @@ namespace App_Puerta
         string id;
         string escenario1;
         string escenario3;
-        string reclutamiento;
-        string verificacion1;
-        string verificacion2;
-        int numMuestras;
         bool timeoutHuella;
         bool timeoutCara;
         HaarCascade haar;
         string IPcam;
-        Stopwatch stopwatch_cara;
+        Stopwatch stopwatch_cara;        
+        List<BluetoothDeviceInfo> deviceList;
+        string DEVICE_PIN = "1234";
+        BluetoothClient localClient;
+        BluetoothDeviceInfo connectedDevice;
 
 
         public App_Puerta()
         {
             InitializeComponent();
-            //capture = new Capture();            
-            //capture.SetCaptureProperty(Emgu.CV.CvEnum.CAP_PROP.CV_CAP_PROP_FRAME_HEIGHT, 720);      //720
-            //capture.SetCaptureProperty(Emgu.CV.CvEnum.CAP_PROP.CV_CAP_PROP_FRAME_WIDTH, 500);       //500            
-            //capture.SetCaptureProperty(Emgu.CV.CvEnum.CAP_PROP.CV_CAP_PROP_CONVERT_RGB, 0);
             user = "root";
             pass = "admin";
             mediaType = "mjpeg";
@@ -68,15 +57,13 @@ namespace App_Puerta
             timeoutHuella = false;
             timeoutCara = false;
             log("Inicio de la app");
-            numMuestras = 5;
             escenario1 = "001";
-            escenario3 = "003";
-            reclutamiento = "RE";
-            verificacion1 = "V1";
-            verificacion2 = "V2";            
+            escenario3 = "003";          
             haar = new HaarCascade(dirLibCaras);
             IPcam = "http://root:admin@" + IP + "/axis-cgi/mjpg/video.cgi?x.mjpeg";
-            stopwatch_cara = new Stopwatch();
+            stopwatch_cara = new Stopwatch();            
+            deviceList = new List<BluetoothDeviceInfo>();
+            connectedDevice = null;
         }
 
         /* EVENTOS DE BOTÓN */
@@ -97,8 +84,7 @@ namespace App_Puerta
                 MessageBox.Show("Por favor, introduce un DNI sin letra");
             }
             else
-            {
-                // AQUÍ HAY QUE COMPROBAR QUE ESTÉ EN LA BD Y QUÉ TIENE COMPLETADO (V1 / V2)
+            {                
                 string fase = completado(textBox_ID_inicio.Text);
 
                 if (fase == "RE") {
@@ -184,6 +170,24 @@ namespace App_Puerta
 
         private void button_huella_Click(object sender, EventArgs e)
         {
+            //ABRIR LA PUERTA
+            //localClient.BeginConnect(connectedDevice.DeviceAddress, BluetoothService.SerialPort, new AsyncCallback(Connect), connectedDevice);
+            Guid uuid = BluetoothService.SerialPort;
+            localClient.Connect(connectedDevice.DeviceAddress, uuid);
+            NetworkStream stream = localClient.GetStream();
+            byte[] datosAbrir = { 1, 2, 3, 4 };
+            if (stream.CanWrite)
+            {
+                stream.Write(datosAbrir, 0, 4);
+                stream.Dispose();
+                stream.Close();
+            }
+            else
+            {
+                MessageBox.Show("Error al conectar a la tablet");
+            }
+
+
             Stopwatch stopwatch = Stopwatch.StartNew();
             int muestra = 1;
             int resultado = 1;                        
@@ -225,7 +229,7 @@ namespace App_Puerta
             }
             else {
                 long time = stopwatch.ElapsedMilliseconds;
-                sw.WriteLine(time.ToString()); // TIMEOUT
+                sw.WriteLine(time.ToString());
             }
 
             sw.Close();            
@@ -289,12 +293,9 @@ namespace App_Puerta
         }
 
         private void button_huella_siguiente_Click(object sender, EventArgs e)
-        {
-            //COMPROBAR QUE TENEMOS TODAS LAS HUELLAS, SI NO, AVISAR!
-            //HABILITAR LA CÁMARA  
+        { 
             iniciarCamara("RE");
-            //Thread.Sleep(500);
-                      
+                               
             panel_cara.Enabled = true;
             button_cara.Enabled = true;
             button_final_reclutamiento.Enabled = true;
@@ -302,8 +303,6 @@ namespace App_Puerta
             StreamWriter sw = File.AppendText(id + ".txt");
             sw.WriteLine("RECLUTAMIENTO CARA");
             sw.Close();
-            //timer_cara_reclutamiento.Enabled = true;
-            //timer_cara_reclutamiento.Start();
         }
 
             //CARA
@@ -399,8 +398,7 @@ namespace App_Puerta
                 sw.WriteLine("-1"); // TIMEOUT
                 sw.Close();
                 stopwatch_cara.Stop();
-                MessageBox.Show("¡¡Timeout!!");
-                //TIMEOUT CARA
+                MessageBox.Show("¡¡Timeout!!");                
                 return;
             }
 
@@ -435,8 +433,6 @@ namespace App_Puerta
                     else if (detectedFaces.Length == 1 && detectedFaces[0].rect.Width > 10)
                     {
                         currentFrame.ToBitmap().Save(dirCaras + nombreArchivo);
-                        //foreach (var face in detectedFaces)
-                        //currentFrame.Draw(face.rect, new Bgr(0, double.MaxValue, 0), 3);
 
                         pictureBox_cara_reclutamiento.Image = currentFrame.ToBitmap();
 
@@ -571,6 +567,20 @@ namespace App_Puerta
             labelHuella = labelHuella + 1;
             label_huellas_V1.Text = "" + labelHuella;
 
+            //ABRIR LA PUERTA
+            localClient.BeginConnect(connectedDevice.DeviceAddress, BluetoothService.SerialPort, new AsyncCallback(Connect), connectedDevice);
+            NetworkStream stream = localClient.GetStream();
+            byte[] datosAbrir = { 1, 2, 3, 4 };
+            if (stream.CanWrite) {
+                stream.Write(datosAbrir, 0, 4);                
+                stream.Dispose();
+                stream.Close();
+            }
+            else
+            {
+                MessageBox.Show("Error al conectar a la tablet");
+            }
+
             if (muestra == 5)
             {
                 MessageBox.Show("VISITA 1 de huella terminada, haga click en Siguiente");
@@ -691,8 +701,7 @@ namespace App_Puerta
                 sw.WriteLine("-1"); // TIMEOUT
                 sw.Close();
                 stopwatch_cara.Stop();
-                MessageBox.Show("¡¡Timeout!!");
-                //TIMEOUT CARA
+                MessageBox.Show("¡¡Timeout!!");                
                 return;
             }
 
@@ -744,6 +753,19 @@ namespace App_Puerta
                         timeOutCara_V1.Stop();
                         timeOutCara_V1.Enabled = false;
                         capture.Dispose();
+
+                        //ABRIR LA PUERTA
+                        NetworkStream stream = localClient.GetStream();
+                        byte[] datosAbrir = { 1, 2, 3, 4 };
+                        if (stream.CanWrite)
+                        {
+                            stream.Write(datosAbrir, 0, 4);
+                            stream.Dispose();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error al conectar a la tablet");
+                        }
 
                         if (muestra == 5)
                         {
@@ -846,7 +868,7 @@ namespace App_Puerta
             timer_cara_v2.Enabled = true;
             timer_cara_v2.Start();
             timeOutCara_V2.Enabled = true;
-            timeOutCara_V2.Start();            
+            timeOutCara_V2.Start();                        
         }
 
         private void button_borrar_caras_v2_Click(object sender, EventArgs e)
@@ -902,8 +924,7 @@ namespace App_Puerta
                 sw.WriteLine("-1"); // TIMEOUT
                 sw.Close();
                 stopwatch_cara.Stop();
-                MessageBox.Show("¡¡Timeout!!");
-                //TIMEOUT CARA
+                MessageBox.Show("¡¡Timeout!!");                
                 return;
             }
 
@@ -955,6 +976,19 @@ namespace App_Puerta
                         timeOutCara_V2.Stop();
                         timeOutCara_V2.Enabled = false;
                         capture.Dispose();
+
+                        //ABRIR LA PUERTA
+                        NetworkStream stream = localClient.GetStream();
+                        byte[] datosAbrir = { 1, 2, 3, 4 };
+                        if (stream.CanWrite)
+                        {
+                            stream.Write(datosAbrir, 0, 4);
+                            stream.Dispose();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error al conectar a la tablet");
+                        }
 
                         if (muestra == 5)
                         {
@@ -1028,7 +1062,7 @@ namespace App_Puerta
             else
             {
                 long time = stopwatch.ElapsedMilliseconds;
-                sw.WriteLine(time.ToString()); // TIMEOUT
+                sw.WriteLine(time.ToString());
             }
 
             sw.Close();
@@ -1037,6 +1071,19 @@ namespace App_Puerta
             pictureBox_huella_v2.Image = bitmapHuella;
             labelHuella = labelHuella + 1;
             label_huellas_V2.Text = "" + labelHuella;
+
+            //ABRIR LA PUERTA
+            NetworkStream stream = localClient.GetStream();
+            byte[] datosAbrir = { 1, 2, 3, 4 };
+            if (stream.CanWrite)
+            {
+                stream.Write(datosAbrir, 0, 4);
+                stream.Dispose();
+            }
+            else
+            {
+                MessageBox.Show("Error al conectar a la tablet");
+            }
 
             if (muestra == 5)
             {
@@ -1146,7 +1193,9 @@ namespace App_Puerta
         /* Reclutamiento de datos*/        
         private int registro(string nombre, string dni)
         {
-
+            if (!File.Exists(dirUsuarios)) {
+                File.Create(dirUsuarios).Close();
+            }
             StreamReader sr = new StreamReader(dirUsuarios);
             String linea = "";
             String aux = "";
@@ -1265,9 +1314,7 @@ namespace App_Puerta
         {            
             int imageWidth, imageHeight;
             byte[] imageArray = null;
-            //Bitmap bitmapHuella = null;
-
-
+            
             unsafe
             {
                 byte* capturedImage = stackalloc byte[200000];
@@ -1464,6 +1511,150 @@ namespace App_Puerta
             MessageBox.Show("Nueva IP: " + IP);
         }
 
+        /* BLUETOOTH*/
+
+        public BluetoothAddress findMACAddress()
+        {
+            BluetoothRadio myRadio = BluetoothRadio.PrimaryRadio;
+            if (myRadio == null) {
+                MessageBox.Show("No se pudo conectar al bluetooth del PC");
+                return null;
+            }
+            
+            return myRadio.LocalAddress;
+        }
+
+        private void button_tablet_Click(object sender, EventArgs e)
+        {
+            label_busca_tablet.Visible = true;
+            //// SCANNING
+
+            // mac is mac address of local bluetooth device
+            // TENGO QUE PROBAR ESTE MÉTODO
+            BluetoothAddress bta = findMACAddress();
+            BluetoothAddress ba = new BluetoothAddress(bta.ToInt64());
+            BluetoothEndPoint localEndpoint = new BluetoothEndPoint(ba, BluetoothService.SerialPort);
+            // client is used to manage connections
+            localClient = new BluetoothClient(localEndpoint);
+            // component is used to manage device discovery
+            BluetoothComponent localComponent = new BluetoothComponent(localClient);
+            // async methods, can be done synchronously too
+            localComponent.DiscoverDevicesAsync(255, true, true, true, true, null);
+            localComponent.DiscoverDevicesProgress += new EventHandler<DiscoverDevicesEventArgs>(component_DiscoverDevicesProgress);
+            localComponent.DiscoverDevicesComplete += new EventHandler<DiscoverDevicesEventArgs>(component_DiscoverDevicesComplete);
+            
+        }
+
+        // callback
+        private void Connect(IAsyncResult result)
+        {
+            if (result.IsCompleted)
+            {
+                // client is connected now :)
+                log("Conexión bluetooth establecida");
+
+                
+            }
+        }
+
+        private void component_DiscoverDevicesProgress(object sender, DiscoverDevicesEventArgs e)
+        {
+            // log and save all found devices
+            for (int i = 0; i < e.Devices.Length; i++)
+            {
+                deviceList.Add(e.Devices[i]);
+            }
+        }
+
+        private void component_DiscoverDevicesComplete(object sender, DiscoverDevicesEventArgs e)
+        {
+            //// PAIRING
+
+            // get a list of all paired devices
+            BluetoothDeviceInfo[] paired = localClient.DiscoverDevices(255, false, true, false, false);
+           
+            // check every discovered device if it is already paired 
+            foreach (BluetoothDeviceInfo device in deviceList)
+            {
+                bool isPaired = false;
+                int i = 0;
+                for (; i < paired.Length; i++)
+                {
+                    if (device.Equals(paired[i]) && device.DeviceName == "OnePlus One")
+                    {
+                        isPaired = true;
+                        connectedDevice = paired[i];
+                        break;
+                    }
+                }
+                
+
+                // if the device is not paired, pair it!
+                if (!isPaired)
+                {
+                    // replace DEVICE_PIN here, synchronous method, but fast
+
+                    isPaired = BluetoothSecurity.PairRequest(connectedDevice.DeviceAddress, DEVICE_PIN);
+                    if (isPaired)
+                    {
+                        //// CONNECTING
+
+                        // check if device is paired
+
+                        //HE DESCOMENTADO ESTE IF PARA PROBAR CON EL MÓVIL
+
+                        //if (connectedDevice.Authenticated)
+                        //{
+                        // set pin of device to connect with
+                        localClient.SetPin(DEVICE_PIN);
+                        // async connection method
+
+                        //COMENTO ESTE MÉTODO ASÍNCRONO
+                        //localClient.Connect(connectedDevice.DeviceAddress, BluetoothService.SerialPort);
+                        localClient.BeginConnect(connectedDevice.DeviceAddress, BluetoothService.SerialPort, new AsyncCallback(Connect), connectedDevice);
+                        OK_tablet.Visible = true;
+                        //}
+                    }
+                    else
+                    {
+                        // pairing failed
+                        MessageBox.Show("No se ha podido conectar a la tablet");
+                        return;
+                    }
+                }
+                else {
+
+                    localClient.SetPin(DEVICE_PIN);
+                    // async connection method
+
+                    //COMENTO ESTE MÉTODO ASÍNCRONO!!
+
+                    //localClient.BeginConnect(connectedDevice.DeviceAddress, BluetoothService.SerialPort, new AsyncCallback(Connect), connectedDevice);
+                    //localClient.Connect(connectedDevice.DeviceAddress, BluetoothService.SerialPort);
+
+                    //BluetoothEndPoint tablet = new BluetoothEndPoint(connectedDevice.DeviceAddress, BluetoothService.SerialPort);
+
+                    NetworkStream stream = localClient.GetStream();
+                    byte[] datosAbrir = { 1, 2, 3, 4 };
+                    if (stream.CanWrite)
+                    {
+                        stream.Write(datosAbrir, 0, 4);
+                        stream.Dispose();
+                        stream.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error al conectar a la tablet");
+                    }
+
+                    OK_tablet.Visible = true;
+                }
+                label_busca_tablet.Visible = false;
+                return;
+            }
+        }
+    
+
 
 
 
@@ -1471,4 +1662,5 @@ namespace App_Puerta
         /********/
 
     }
+
 }
